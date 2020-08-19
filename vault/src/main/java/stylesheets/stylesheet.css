@@ -1,0 +1,102 @@
+* {
+    -fx-primary-gradient: linear-gradient(to bottom right, #014fff, #ea00ff);
+    -fx-primary-color: #eeeeee;
+    -fx-secondary-color: #333333;
+
+    -fx-primary-font-color: #444444;
+
+    -fx-text-fill: -fx-primary-font-color;
+    -fx-background-insets: 0, 0, 0;
+}
+
+/*Defaults*/
+
+.root {
+    -fx-background-color: -fx-primary-color;
+}
+
+.button {
+    -fx-background-color: #00000000;
+    -fx-border-color: -fx-secondary-color;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-width: 3px
+}
+
+.button:hover {
+    -fx-background-color: #00000000;
+    -fx-border-color: -fx-primary-gradient;
+    -fx-text-fill: -fx-primary-font-color;
+}
+
+.button:armed {
+    -fx-background-color: -fx-secondary-color;
+    -fx-border-color: -fx-secondary-color;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.text-field {
+    -fx-background-color: #00000000;
+    -fx-border-color: -fx-secondary-color;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.text-field:hover {
+    -fx-border-color: -fx-primary-gradient;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.text-field:focused {
+    -fx-border-color: -fx-secondary-color;
+    -fx-border-width: 0px 0px 2px 0px;
+}
+
+.list-view {
+    -fx-background-color: -fx-primary-font-color;
+    
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.list-cell:filled:hover {
+    -fx-border-color: -fx-primary-gradient;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.list-cell:filled:selected {
+    -fx-border-color: -fx-primary-color;
+    -fx-border-width: 0px 0px 1px 0px;
+}
+
+.text-area {
+    -fx-text-fill: -fx-secondary-color;
+    -fx-background-color: -fx-primary-color;
+}
+
+.tooltip {
+    -fx-text-fill: -fx-primary-color;
+}
+
+/*Customs*/
+
+.secondary-button {
+    -fx-background-color: -fx-secondary-color;
+    -fx-background-radius: 0px;
+    -fx-text-fill: -fx-primary-color;
+    -fx-border-radius: 0px;   
+}
+
+.secondary-button:hover {
+    -fx-background-color: -fx-primary-gradient;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.secondary-button:armed {
+    -fx-background-color: #00000000;
+    -fx-text-fill: -fx-secondary-color;
+    -fx-border-color: -fx-secondary-color;
+    -fx-border-width: 3px;
+}
