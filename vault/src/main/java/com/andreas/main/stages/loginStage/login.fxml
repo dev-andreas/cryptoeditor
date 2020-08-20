@@ -2,9 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
@@ -14,17 +19,26 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane stylesheets="@../../../../../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.loginStage.LoginController">
    <left>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addSavePressed" styleClass="secondary-button" text="+">
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addSave" styleClass="secondary-button" text="+">
                <tooltip>
                   <Tooltip text="Create new save" />
                </tooltip>
             </Button>
-            <ListView fx:id="savesList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#savePressed" VBox.vgrow="ALWAYS" />
+            <ListView fx:id="savesList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#savePressed" VBox.vgrow="ALWAYS">
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#addSave" text="New save... (Ctrl + C)" />
+                      <MenuItem mnemonicParsing="false" onAction="#renameSave" text="Rename save... (Ctrl + R)" />
+                      <MenuItem mnemonicParsing="false" onAction="#deleteSave" text="Delete save... (Ctrl + D)" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+               </ListView>
          </children>
       </VBox>
    </left>
@@ -67,7 +81,7 @@
                         <Insets left="20.0" right="20.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <Button mnemonicParsing="false" onMouseClicked="#openPressed" text="Open">
+                  <Button fx:id="open" mnemonicParsing="false" onMouseClicked="#openPressed" text="Open">
                      <VBox.margin>
                         <Insets top="10.0" />
                      </VBox.margin>
@@ -106,4 +120,35 @@
          </children>
       </VBox>
    </center>
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#addSave" text="New save... (Ctrl + C)" />
+                  <MenuItem mnemonicParsing="false" onAction="#renameSave" text="Rename save... (Ctrl + R)" />
+                  <MenuItem mnemonicParsing="false" onAction="#deleteSave" text="Delete save... (Ctrl + D)" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu mnemonicParsing="false" text="Backup">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Backup save... (Ctrl + B)" />
+                        <MenuItem mnemonicParsing="false" text="Load backup... (Ctrl + L)" />
+                    </items>
+                  </Menu>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Settings">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Languages..." />
+                  <MenuItem mnemonicParsing="false" text="Themes..." />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Watch tutorial" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
 </BorderPane>

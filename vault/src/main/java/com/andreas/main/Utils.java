@@ -43,13 +43,14 @@ public class Utils {
     
     public static boolean createXmlFile(String path, Element root) {
 
+        root.detach();
+
         try {
 
             Document doc = new Document(root);
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fileWriter = new FileWriter(path);
 
-            // display nice nice
             xmlOutput.setFormat(Format.getPrettyFormat());
             xmlOutput.output(doc, fileWriter);
             

@@ -11,10 +11,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
@@ -22,6 +20,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 
 public class SaveController extends AppController {
 
@@ -44,38 +43,63 @@ public class SaveController extends AppController {
 
     @Override
     public void init() {
+
+        // shortcuts
         Platform.runLater(() -> {        
-            saveButton.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), () -> {
-                if (index < 0) return;
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), () -> {
                 saveData();
             });
         });
 
-        ContextMenu contextMenu = new ContextMenu();
-
-        MenuItem item1 = new MenuItem("Create new");
-        MenuItem item2 = new MenuItem("Delete");
-        MenuItem item3 = new MenuItem("Rename");
-
-        item1.setOnAction(e -> {
-            addRegister();
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
+                addRegister();
+            });
         });
 
-        item2.setOnAction(e -> {
-            deleteRegister();
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN), () -> {
+                renameRegister();
+            });
         });
 
-        item3.setOnAction(e -> {
-            renameRegister();
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
+                deleteRegister();
+            });
         });
 
-        contextMenu.getItems().addAll(item1, item2, item3); 
-        registers.setContextMenu(contextMenu);
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.B, KeyCombination.SHORTCUT_DOWN), () -> {
+                // TODO backup
+            });
+        });
+
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), () -> {
+                // TODO load backup
+            });
+        });
+
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.I, KeyCombination.SHORTCUT_DOWN), () -> {
+                // TODO import file
+            });
+        });
+
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN), () -> {
+                // TODO export file
+            });
+        });
+
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> {
+                lockSavePressed(null);
+            });
+        });
+
         setEditable();
-    }
-
-    public void addRegisterPressed(MouseEvent event) {
-        addRegister();
     }
 
     public void registersPressed(MouseEvent event) {
@@ -89,13 +113,10 @@ public class SaveController extends AppController {
         setEditable();
     }
 
-    public void saveChangesPressed(MouseEvent event) {
-        saveData();
-    }
-
     public void lockSavePressed(MouseEvent event) {
-        Alert alert = new Alert(AlertType.CONFIRMATION, "Save gets closed. Are you sure you want to leave?\nAttention: Don't forget to save!", 
-        ButtonType.YES, ButtonType.CANCEL);
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Save gets closed. Are you sure you want to leave?\nAttention: Don't forget to save!",
+                ButtonType.CANCEL, ButtonType.YES);
+        alert.initModality(Modality.WINDOW_MODAL);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
@@ -118,21 +139,22 @@ public class SaveController extends AppController {
         ((SaveStage) stage).getSave().getRegisters().get(index).setContent(registerContent.getText());
     }
 
-    private void saveData() {
+    public void saveData() {
         Save save = ((SaveStage) stage).getSave();
 
         save.save("data/saves/" + save.getId() + ".xml");
         savedState.setText("Saved");
     }
 
-    private void addRegister() {
+    public void addRegister() {
         NewRegisterStage stage = new NewRegisterStage(this.stage.getApp(), (SaveStage) this.stage);
         stage.show();
     }
 
-    private void deleteRegister() {
+    public void deleteRegister() {
         Alert alert = new Alert(AlertType.CONFIRMATION, "Delete \"" + registers.getSelectionModel().getSelectedItem() + "\"?", 
-            ButtonType.YES, ButtonType.CANCEL);
+            ButtonType.CANCEL, ButtonType.YES);
+        alert.initModality(Modality.WINDOW_MODAL);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
@@ -150,6 +172,8 @@ public class SaveController extends AppController {
     public void renameRegister() {
         RenameRegisterStage stage = new RenameRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
         stage.show();
+
+        // TODO error
     }
 
     public void setEditable() {

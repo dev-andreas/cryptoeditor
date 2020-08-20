@@ -14,7 +14,7 @@ public class SaveStage extends AppStage {
 
         this.save = save;
 
-        setTitle("Login");
+        setTitle(save.getName());
 
         init();
 

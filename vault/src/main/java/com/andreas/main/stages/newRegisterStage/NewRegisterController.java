@@ -5,9 +5,12 @@ import com.andreas.main.save.Register;
 import com.andreas.main.stages.saveStage.SaveController;
 import com.andreas.main.stages.saveStage.SaveStage;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 
 public class NewRegisterController extends AppController {
@@ -20,7 +23,12 @@ public class NewRegisterController extends AppController {
 
     @Override
     public void init() {
-
+        // Shortcuts
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+                createPressed(null);
+            });
+        });
     }
 
     public void createPressed(MouseEvent event) {

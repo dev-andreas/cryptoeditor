@@ -6,10 +6,13 @@ import com.andreas.main.save.Save;
 import com.andreas.main.stages.loginStage.LoginController;
 import com.andreas.main.stages.loginStage.LoginStage;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 
 public class RemoveSaveController extends AppController{
@@ -25,7 +28,11 @@ public class RemoveSaveController extends AppController{
 
     @Override
     public void init() {
-        delete.requestFocus();
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+                deletePressed(null);
+            });
+        });
     }
 
     public void deletePressed(MouseEvent event) {

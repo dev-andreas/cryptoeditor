@@ -8,11 +8,14 @@ import com.andreas.main.save.Save;
 import com.andreas.main.stages.loginStage.LoginController;
 import com.andreas.main.stages.loginStage.LoginStage;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 
 public class NewSaveController extends AppController {
@@ -36,6 +39,13 @@ public class NewSaveController extends AppController {
 
     @Override
     public void init() {
+
+        // Shortcuts
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+                createPressed(null);
+            });
+        });
 
         LoginStage loginStage = ((NewSaveStage)stage).getLoginStage();
         LoginController loginController = (LoginController)loginStage.getController();

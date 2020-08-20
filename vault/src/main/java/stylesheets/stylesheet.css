@@ -80,8 +80,23 @@
     -fx-text-fill: -fx-primary-color;
 }
 
-/*Customs*/
+.menu-bar {
+    -fx-background-color: -fx-primary-color;
+}
 
+.menu {
+    -fx-background-color: transparent;
+}
+
+.menu:hover, .menu:armed, .menu:focused {
+    -fx-background-color: #dddddd;
+}
+
+.menu-item:hover, .menu-item:armed, .menu-item:focused {
+    -fx-background-color: #eeeeee;
+}
+
+/*Customs*/
 .secondary-button {
     -fx-background-color: -fx-secondary-color;
     -fx-background-radius: 0px;

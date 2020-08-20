@@ -7,9 +7,12 @@ import java.security.KeyPair;
 import com.andreas.main.app.AppController;
 import com.andreas.main.cryptography.RSA;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 
@@ -29,7 +32,12 @@ public class CreateKeyController extends AppController {
 
     @Override
     public void init() {
-        create.requestFocus();
+        // Shortcuts
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+                createPressed(null);
+            });
+        });
     }
 
     public void browsePressed(MouseEvent event) {

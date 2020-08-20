@@ -6,11 +6,14 @@ import com.andreas.main.save.Save;
 import com.andreas.main.stages.loginStage.LoginController;
 import com.andreas.main.stages.loginStage.LoginStage;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 
 public class RenameSaveController extends AppController {
@@ -29,7 +32,13 @@ public class RenameSaveController extends AppController {
 
     @Override
     public void init() {
-        rename.requestFocus();
+        
+        // Shortcuts
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+                renamePressed(null);
+            });
+        });
     }
 
     public void renamePressed(MouseEvent event) {
@@ -53,7 +62,6 @@ public class RenameSaveController extends AppController {
 
         stage.renameSave(save, index, newName.getText());
         this.stage.close();
-        
     }
 
     public void cancelPressed(MouseEvent event) {

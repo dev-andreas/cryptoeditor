@@ -1,17 +1,21 @@
 package com.andreas.main.stages.loginStage;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 
 import com.andreas.main.app.AppController;
 import com.andreas.main.cryptography.RSA;
@@ -50,38 +54,54 @@ public class LoginController extends AppController {
     @FXML
     public Label notification;
 
+    @FXML
+    public Button open;
+
     private int index;
 
     @Override
     public void init() {
 
-        ContextMenu contextMenu = new ContextMenu();
-
-        MenuItem item1 = new MenuItem("Create new");
-        MenuItem item2 = new MenuItem("Delete");
-        MenuItem item3 = new MenuItem("Rename");
-
-        item1.setOnAction(e -> {
-            addSave();
+        // Shortcuts
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+                openPressed(null);
+            });
         });
 
-        item2.setOnAction(e -> {
-            deleteSave();
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
+                addSave();
+            });
         });
 
-        item3.setOnAction(e -> {
-            renameSave();
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN), () -> {
+                renameSave();
+            });
         });
 
-        contextMenu.getItems().addAll(item1, item2, item3);
-        savesList.setContextMenu(contextMenu);
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
+                deleteSave();
+            });
+        });
+
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.B, KeyCombination.SHORTCUT_DOWN), () -> {
+                // TODO backup
+            });
+        });
+
+        Platform.runLater(() -> {        
+            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), () -> {
+                // TODO load backup
+            });
+        });
+
         setEditable();
 
         keyPath.setText(readKeyPath());
-    }
-
-    public void addSavePressed(MouseEvent event) {
-        addSave();
     }
 
     public void openPressed(MouseEvent event) {
@@ -108,7 +128,10 @@ public class LoginController extends AppController {
             ButtonType openAnyway = new ButtonType("Open anyway");
             ButtonType removed = new ButtonType("I removed it");
             Alert alert = new Alert(AlertType.WARNING, "Please remove your storage medium in which the key is located.", 
-            openAnyway, removed);
+            removed, openAnyway);
+
+            alert.initModality(Modality.WINDOW_MODAL);
+
             alert.showAndWait();
 
             if (alert.getResult() == openAnyway) {
@@ -131,12 +154,12 @@ public class LoginController extends AppController {
     }
 
     public void savePressed(MouseEvent event) {
-
+        
         index = savesList.getSelectionModel().getSelectedIndex();
-        if (index < 0) return;
+        if (index < 0)
+            return;
 
         saveName.setText(savesList.getSelectionModel().getSelectedItem());
-
         setEditable();
     }
 
@@ -169,12 +192,12 @@ public class LoginController extends AppController {
         return false;
     }
 
-    private void addSave() {
+    public void addSave() {
         NewSaveStage stage = new NewSaveStage(this.stage.getApp(), (LoginStage)this.stage);
         stage.show();
     }
 
-    private void deleteSave() {
+    public void deleteSave() {
         RemoveSaveStage stage = new RemoveSaveStage(this.stage.getApp(), (LoginStage)this.stage);
         stage.show();
     }
