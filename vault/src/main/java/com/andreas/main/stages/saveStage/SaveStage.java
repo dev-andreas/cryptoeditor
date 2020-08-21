@@ -37,6 +37,10 @@ public class SaveStage extends AppStage {
         ((SaveController)getController()).savedState.setText("Unsaved changes!");
     }
 
+    public void removeRegister(int index) {
+        save.getRegisters().remove(index);
+    }
+
     private void loadRegisters() {
         for (Register r : save.getRegisters()) {
             ((SaveController)getController()).registers.getItems().add(r.getName());

@@ -1,6 +1,5 @@
 package com.andreas.main.stages.createKeyStage;
 
-import java.awt.Button;
 import java.io.File;
 import java.security.KeyPair;
 
@@ -9,6 +8,7 @@ import com.andreas.main.cryptography.RSA;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;

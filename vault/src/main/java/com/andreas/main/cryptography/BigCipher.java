@@ -35,8 +35,6 @@ public class BigCipher {
     public String decrypt(PrivateKey pkey) {
         byte[] keyBytes = RSA.decryptToBytes(keyCipher, pkey);
 
-        System.out.println(keyBytes.length);
-
         SecretKey skey = AES.getSecretKeyFromByteArray(keyBytes);
 
         return AES.decrypt(cipher, skey, iv);

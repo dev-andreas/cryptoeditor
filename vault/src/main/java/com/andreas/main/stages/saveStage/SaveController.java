@@ -152,6 +152,7 @@ public class SaveController extends AppController {
     }
 
     public void deleteRegister() {
+
         Alert alert = new Alert(AlertType.CONFIRMATION, "Delete \"" + registers.getSelectionModel().getSelectedItem() + "\"?", 
             ButtonType.CANCEL, ButtonType.YES);
         alert.initModality(Modality.WINDOW_MODAL);
@@ -159,6 +160,7 @@ public class SaveController extends AppController {
 
         if (alert.getResult() == ButtonType.YES) {
             registers.getItems().remove(index);
+            ((SaveStage)stage).removeRegister(index);
             registerName.setText("No register selected");
             registerContent.setText("");
             setEditable();
@@ -172,8 +174,6 @@ public class SaveController extends AppController {
     public void renameRegister() {
         RenameRegisterStage stage = new RenameRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
         stage.show();
-
-        // TODO error
     }
 
     public void setEditable() {

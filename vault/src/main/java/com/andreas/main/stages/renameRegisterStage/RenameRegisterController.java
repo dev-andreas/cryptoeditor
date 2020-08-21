@@ -15,10 +15,13 @@ import javafx.scene.input.MouseEvent;
 public class RenameRegisterController extends AppController{
 
     @FXML
-    public TextField newName = new TextField();
+    public TextField newName;
 
     @FXML
-    public Label message = new Label();
+    public Label message;
+
+    @FXML
+    public Label oldName;
 
     @Override
     public void init() {
@@ -29,6 +32,11 @@ public class RenameRegisterController extends AppController{
                 renamePressed(null);
             });
         });
+
+        SaveStage saveStage = ((RenameRegisterStage)stage).getSaveStage();
+        SaveController saveController = (SaveController)saveStage.getController();
+
+        oldName.setText("Rename\"" + saveController.registers.getSelectionModel().getSelectedItem() + "\"?");
     }
 
     public void renamePressed(MouseEvent event) {
@@ -45,7 +53,7 @@ public class RenameRegisterController extends AppController{
             return;
         }
         
-        stage.renameRegister(controller.registers.getSelectionModel().getSelectedIndex(), message.getText());
+        stage.renameRegister(controller.registers.getSelectionModel().getSelectedIndex(), newName.getText());
 
         this.stage.close();
     }
