@@ -16,20 +16,36 @@
          <children>
             <Label stylesheets="@../../../../../stylesheets/stylesheet.css" text="Rename Save">
                <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  <Insets left="20.0" right="20.0" top="20.0" />
                </VBox.margin>
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="newName" promptText="New name:">
+            <Label text="New name:">
                <VBox.margin>
-                  <Insets left="20.0" right="20.0" top="20.0" />
+                  <Insets left="20.0" top="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </Label>
+            <TextField fx:id="newName">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </TextField>
-            <PasswordField fx:id="password" promptText="Enter password:">
+            <Label text="Enter password:">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
                <VBox.margin>
-                  <Insets left="20.0" right="20.0" top="20.0" />
+                  <Insets left="20.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+            <PasswordField fx:id="password">
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </PasswordField>
             <HBox alignment="TOP_CENTER" prefHeight="6.0" prefWidth="400.0">
@@ -49,12 +65,14 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
-            <Label fx:id="notification">
-               <VBox.margin>
-                  <Insets left="20.0" top="20.0" />
-               </VBox.margin>
-            </Label>
          </children>
       </VBox>
    </center>
+   <bottom>
+      <Label fx:id="notification" BorderPane.alignment="TOP_LEFT">
+         <BorderPane.margin>
+            <Insets bottom="20.0" left="20.0" top="20.0" />
+         </BorderPane.margin>
+      </Label>
+   </bottom>
 </BorderPane>

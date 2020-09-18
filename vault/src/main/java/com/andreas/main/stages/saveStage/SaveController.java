@@ -1,45 +1,61 @@
 package com.andreas.main.stages.saveStage;
 
 import com.andreas.main.app.AppController;
+import com.andreas.main.app.RegisterTab;
+import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
+import com.andreas.main.save.SaveTreeItem;
+import com.andreas.main.stages.exportRegisterStage.ExportRegisterStage;
+import com.andreas.main.stages.importRegisterStage.ImportRegisterStage;
 import com.andreas.main.stages.loginStage.LoginStage;
 import com.andreas.main.stages.newRegisterStage.NewRegisterStage;
 import com.andreas.main.stages.renameRegisterStage.RenameRegisterStage;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.control.TreeCell;
+import javafx.scene.control.TreeView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class SaveController extends AppController {
 
     @FXML
-    public Label registerName = new Label();
+    public Label registerName;
 
     @FXML
-    public TextArea registerContent = new TextArea();
+    public Label fileType;
 
     @FXML
-    public ListView<String> registers = new ListView<>();
+    public Label savedState;
 
     @FXML
-    public Label savedState = new Label();
+    public Button saveButton;
 
     @FXML
-    public Button saveButton = new Button();
+    public VBox registersBox;
 
-    private int index;
+    @FXML
+    public TabPane tabs;
+
+    @FXML
+    public TreeView<String> registers;
+
+    public SaveTreeItem selectedItem, selectedDirectory;
 
     @Override
     public void init() {
@@ -47,7 +63,7 @@ public class SaveController extends AppController {
         // shortcuts
         Platform.runLater(() -> {        
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), () -> {
-                saveData();
+                saveCurrentTab();
             });
         });
 
@@ -83,37 +99,75 @@ public class SaveController extends AppController {
 
         Platform.runLater(() -> {        
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.I, KeyCombination.SHORTCUT_DOWN), () -> {
-                // TODO import file
+                importRegister();
             });
         });
 
         Platform.runLater(() -> {        
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN), () -> {
-                // TODO export file
+                exportRegister();
             });
         });
 
         Platform.runLater(() -> {        
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> {
-                lockSavePressed(null);
+                lockSavePressed();
             });
         });
 
-        setEditable();
+
+        // set tree item double click action
+        registers.setCellFactory(tree -> {
+            TreeCell<String> cell = new TreeCell<String>() {
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (empty) {
+                        setText(null);
+                    } else {
+                        setText(item);
+                    }
+                }
+            };
+            cell.setOnMouseClicked(event -> {
+                if (! cell.isEmpty()) {
+                    if (event.getButton().equals(MouseButton.PRIMARY)) {
+                        selectedItem = (SaveTreeItem) registers.getSelectionModel().getSelectedItem();
+                        if (!selectedItem.getType().equals(Register.DIRECTORY)) {
+                            if (event.getClickCount() == 2)
+                                openTab();
+                            selectedDirectory = (SaveTreeItem) registers.getSelectionModel().getSelectedItem().getParent();
+                        } else {
+                            selectedDirectory = (SaveTreeItem) registers.getSelectionModel().getSelectedItem();
+                        }
+                    }
+                }
+            });
+            return cell ;
+        });
+
+        // tab changed action
+        tabs.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<Tab>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Tab> observable, Tab oldTab, Tab newTab) {
+				if (newTab == null) {
+                    registerName.setText("");
+                    fileType.setText("");
+                    return;
+                }
+                savedState.setText(((RegisterTab)newTab).isSaved() ? "" : "Unsaved changes.");
+                registerName.setText(((RegisterTab)newTab).getRegister().getName());
+                fileType.setText(((RegisterTab)newTab).getRegister().getFileType());
+			}
+        });
+
+        selectedItem = (SaveTreeItem) registers.getRoot();
+        selectedDirectory = selectedItem;
     }
 
-    public void registersPressed(MouseEvent event) {
-
-        index = registers.getSelectionModel().getSelectedIndex();
-        if (index < 0)
-            return;
-
-        registerName.setText(registers.getSelectionModel().getSelectedItem());
-        registerContent.setText(((SaveStage) stage).getSave().getRegisters().get(index).getContent());
-        setEditable();
-    }
-
-    public void lockSavePressed(MouseEvent event) {
+    @FXML
+    public void lockSavePressed() {
         Alert alert = new Alert(AlertType.CONFIRMATION, "Save gets closed. Are you sure you want to leave?\nAttention: Don't forget to save!",
                 ButtonType.CANCEL, ButtonType.YES);
         alert.initModality(Modality.WINDOW_MODAL);
@@ -131,39 +185,21 @@ public class SaveController extends AppController {
         }
     }
 
-    public void keyTyped(KeyEvent event) {
-        if (index < 0)
-            return;
-
-        savedState.setText("Unsaved changes!");
-        ((SaveStage) stage).getSave().getRegisters().get(index).setContent(registerContent.getText());
-    }
-
-    public void saveData() {
-        Save save = ((SaveStage) stage).getSave();
-
-        save.save("data/saves/" + save.getId() + ".xml");
-        savedState.setText("Saved");
-    }
-
+    @FXML
     public void addRegister() {
         NewRegisterStage stage = new NewRegisterStage(this.stage.getApp(), (SaveStage) this.stage);
         stage.show();
     }
 
+    @FXML
     public void deleteRegister() {
-
-        Alert alert = new Alert(AlertType.CONFIRMATION, "Delete \"" + registers.getSelectionModel().getSelectedItem() + "\"?", 
+        Alert alert = new Alert(AlertType.CONFIRMATION, "Delete \"" + selectedItem.getName() + "\"?", 
             ButtonType.CANCEL, ButtonType.YES);
         alert.initModality(Modality.WINDOW_MODAL);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
-            registers.getItems().remove(index);
-            ((SaveStage)stage).removeRegister(index);
-            registerName.setText("No register selected");
-            registerContent.setText("");
-            setEditable();
+            ((SaveStage)stage).removeRegister();
         }
 
         if (alert.getResult() == ButtonType.CANCEL) {
@@ -171,19 +207,53 @@ public class SaveController extends AppController {
         }
     }
 
+    @FXML
     public void renameRegister() {
         RenameRegisterStage stage = new RenameRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
         stage.show();
     }
 
-    public void setEditable() {
-        registerContent.setEditable(registers.getItems().size() > 0);
+    @FXML
+    public void importRegister() {
+        Stage stage = new ImportRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        stage.show();
+    }
+
+    @FXML
+    public void exportRegister() {
+        Stage stage = new ExportRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        stage.show();
+    }
+
+    public void saveCurrentTab() {
+        if (tabs.getSelectionModel().getSelectedIndex() < 0 || savedState.getText().equals(""))
+            return;
+        Save save = ((SaveStage)stage).getSave();
+        ((RegisterTab)tabs.getSelectionModel().getSelectedItem()).save(save);
+
+        savedState.setText("");
+    }
+
+    public void openTab() {
+        if (selectedItem.getType().equals(Register.DIRECTORY))
+            return;
+
+        Register register = new Register(selectedItem.calculatePath());
+        register.read();
+        ((SaveStage)stage).getSave().openRegister(register);
+        RegisterTab tab = RegisterTab.getCorrectTab((SaveStage)stage, register);
+        tabs.getTabs().add(tab);
+        tabs.getSelectionModel().select(tab);
     }
 
     public boolean nameExists(String name) {
-        for (String n : registers.getItems())
-            if (n.equals(name))
-                return true;
-        return false;
+        boolean[] exists = new boolean[] { false };
+        selectedDirectory.forEachChild(e -> {
+            if ((e.getName() + e.getType()).equals(name)) {
+                exists[0] = true;
+                return;
+            }
+        });
+        return exists[0];
     }
 }

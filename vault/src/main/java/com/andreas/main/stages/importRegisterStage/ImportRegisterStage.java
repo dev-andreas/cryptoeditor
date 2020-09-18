@@ -1,4 +1,4 @@
-package com.andreas.main.stages.renameRegisterStage;
+package com.andreas.main.stages.importRegisterStage;
 
 import com.andreas.main.app.AppStage;
 import com.andreas.main.stages.saveStage.SaveStage;
@@ -6,15 +6,15 @@ import com.andreas.main.stages.saveStage.SaveStage;
 import javafx.application.Application;
 import javafx.stage.Modality;
 
-public class RenameRegisterStage extends AppStage {
+public class ImportRegisterStage extends AppStage {
 
     private SaveStage saveStage;
 
-    public RenameRegisterStage(Application app, SaveStage saveStage) {
-        super(app, "stages/renameRegisterStage/renameRegister.fxml");
-        setTitle("Rename register");
+    public ImportRegisterStage(Application app, SaveStage saveStage) {
+        super(app, "stages/importRegisterStage/importRegister.fxml");
+        setTitle("Import");
         setResizable(false);
-        initModality(Modality.APPLICATION_MODAL);
+        initModality(Modality.WINDOW_MODAL);
 
         this.saveStage = saveStage;
 

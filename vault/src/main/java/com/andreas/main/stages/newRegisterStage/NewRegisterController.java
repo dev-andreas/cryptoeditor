@@ -2,12 +2,13 @@ package com.andreas.main.stages.newRegisterStage;
 
 import com.andreas.main.app.AppController;
 import com.andreas.main.save.Register;
+import com.andreas.main.stages.StageUtils;
 import com.andreas.main.stages.saveStage.SaveController;
 import com.andreas.main.stages.saveStage.SaveStage;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -16,10 +17,10 @@ import javafx.scene.input.MouseEvent;
 public class NewRegisterController extends AppController {
 
     @FXML
-    public TextField registerName = new TextField();
+    public TextField registerName;
 
     @FXML
-    public Label notification = new Label();
+    public ComboBox<String> registerType;
 
     @Override
     public void init() {
@@ -29,6 +30,9 @@ public class NewRegisterController extends AppController {
                 createPressed(null);
             });
         });
+
+        registerType.getItems().addAll(Register.INTERN_FILE_TYPES);
+        registerType.setValue(Register.DEFAULT_FILE_TYPE);
     }
 
     public void createPressed(MouseEvent event) {
@@ -36,17 +40,16 @@ public class NewRegisterController extends AppController {
         SaveController saveController = (SaveController)saveStage.getController();
 
         if (registerName.getText().isEmpty()) {
-            notification.setText("Please enter a register name!");
+            StageUtils.pushNotification("Please enter a register name!");
             return;
         }
 
-        if (saveController.nameExists(registerName.getText())) {
-            notification.setText("Name already exists!");
+        if (saveController.nameExists(registerName.getText()+registerType.getValue())) {
+            StageUtils.pushNotification("Name already exists!");
             return;
         }
 
-        Register register = new Register(saveStage.getSave(), registerName.getText(), "");
-        saveStage.addRegister(register, registerName.getText());
+        saveStage.addRegister(registerName.getText(), registerType.getValue());
 
         stage.close();
     }

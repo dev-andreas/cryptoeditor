@@ -5,26 +5,39 @@
 
     -fx-primary-font-color: #444444;
 
-    -fx-text-fill: -fx-primary-font-color;
+    -fx-arrow-right-shape: "M 0 0.1 L 0.1 0 L 0.6 0.5 L 0.1 1 L 0 0.9 L 0.4 0.5 Z";
+    -fx-cross-shape: "M 0.1 0 L 0 0.1 L 0.4 0.5 L 0 0.9 L 0.1 1 L 0.5 0.6 L 0.9 1 L 1 0.9 L 0.6 0.5 L 1 0.1 L 0.9 0 L 0.5 0.4 Z";
+    -fx-floppy-shape: "M 0 1 L 1 1 L 1 0 L 0.7666 0 L 0.7666 0.2333 L 0.2666 0.2333 L 0.2666 0.0333 L 0.3666 0.0333 L 0.3666 0.2 L 0.2666 0.2 L 0.2666 0.2333 L 0.2333 0.2333 L 0.2333 0 L 0.1 0 L 0 0.1 L 0 0.5 L 0.3333 0.5333 C 0.3333 0.3 0.6666 0.3 0.6666 0.5333 C 0.6666 0.7666 0.3333 0.7666 0.3333 0.5333 L 0 0.5 Z";
+    -fx-lock-shape: "M 0 1 L 0.3429 1 L 0.3429 0.8857 L 0.2286 0.8857 C 0.1714 0.8857 0.1714 0.8286 0.2286 0.8286 L 0.3429 0.8286 L 0.3429 0.7429 L 0.2286 0.7429 C 0.1714 0.7429 0.1714 0.6857 0.2286 0.6857 L 0.3429 0.6857 L 0.3429 0.6 L 0.2286 0.6 C 0.1714 0.6 0.1714 0.5429 0.2286 0.5429 L 0.3429 0.5429 L 0.3429 0.4286 L 0.0857 0.4286 L 0.0857 0.2286 A 0.0714 0.0714 0 1 1 0.2571 0.2286 L 0.2571 0.2857 C 0.2571 0.3714 0.3143 0.3714 0.3143 0.2857 L 0.3143 0.2286 A 0.0714 0.0714 0 1 0 0.0286 0.2286 L 0.0286 0.4 L 0.0857 0.4 L 0.0857 0.4286 L 0 0.4286 Z";
+    -fx-toggle-off: "M 0 0 L 1 0 L 1 0.5 L 0 0.5 L 0 0 L 0.0625 0.0625 L 0.0625 0.4375 L 0.3125 0.4375 L 0.3125 0.0625 L 0.0625 0.0625 Z";
+    -fx-toggle-on: "M 0 0 L 1 0 L 1 0.5 L 0 0.5 L 0 0 L 0.6875 0.0625 L 0.6875 0.4375 L 0.9375 0.4375 L 0.9375 0.0625 L 0.6875 0.0625 Z";
+    -fx-attention-shape: "M 0.0870 1 A 0.0435 0.0435 0 1 1 0.1739 1 A 0.0435 0.0435 0 1 1 0.0870 1 L 0.0870 0.8261 L 0.0435 0.1304 C 0.0435 0 0.2174 0 0.2174 0.1304 L 0.1739 0.8261 C 0.1739 0.9130 0.0870 0.9130 0.0870 0.8261 Z";
+    -fx-plus-shape: "M 0.4444 0.4444 L 0.4444 0 L 0.5555 0 L 0.5555 0.4444 L 1 0.4444 L 1 0.5555 L 0.5555 0.5555 L 0.5555 1 L 0.4444 1 L 0.4444 0.5555 L 0 0.5555 L 0 0.4444 Z";
+
     -fx-background-insets: 0, 0, 0;
+    
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 /*Defaults*/
+
 
 .root {
     -fx-background-color: -fx-primary-color;
 }
 
+/*button*/
 .button {
-    -fx-background-color: #00000000;
+    -fx-background-color: transparent;
     -fx-border-color: -fx-secondary-color;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-border-width: 3px
+    -fx-border-width: 3px;
 }
 
 .button:hover {
-    -fx-background-color: #00000000;
+    -fx-background-color: transparent;
     -fx-border-color: -fx-primary-gradient;
     -fx-text-fill: -fx-primary-font-color;
 }
@@ -35,6 +48,7 @@
     -fx-text-fill: -fx-primary-color;
 }
 
+/*text field*/
 .text-field {
     -fx-background-color: #00000000;
     -fx-border-color: -fx-secondary-color;
@@ -43,17 +57,15 @@
 
 .text-field:hover {
     -fx-border-color: -fx-primary-gradient;
-    -fx-border-width: 0px 0px 1px 0px;
 }
 
 .text-field:focused {
-    -fx-border-color: -fx-secondary-color;
-    -fx-border-width: 0px 0px 2px 0px;
+    -fx-border-color: -fx-primary-gradient;
 }
 
+/*list view*/
 .list-view {
     -fx-background-color: -fx-primary-font-color;
-    
 }
 
 .list-cell {
@@ -62,24 +74,59 @@
 }
 
 .list-cell:filled:hover {
-    -fx-border-color: -fx-primary-gradient;
-    -fx-border-width: 0px 0px 1px 0px;
+    -fx-background-color: derive(-fx-secondary-color, 20%);
 }
 
 .list-cell:filled:selected {
-    -fx-border-color: -fx-primary-color;
-    -fx-border-width: 0px 0px 1px 0px;
+    -fx-background-color: derive(-fx-secondary-color, 30%);
 }
 
-.text-area {
-    -fx-text-fill: -fx-secondary-color;
+/*tree view*/
+.tree-view {
+    -fx-background-color: -fx-primary-font-color;
+}
+
+.tree-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-primary-color;
+}
+
+.tree-cell:filled:hover {
+    -fx-background-color: derive(-fx-secondary-color, 20%);
+}
+
+.tree-cell:filled:selected {
+    -fx-background-color: derive(-fx-secondary-color, 30%);
+}
+
+.tree-cell > .tree-disclosure-node > .arrow  {
+    -fx-shape: -fx-arrow-right-shape;
     -fx-background-color: -fx-primary-color;
 }
 
+/*text area*/
+.text-area {
+    -fx-text-fill: -fx-secondary-color;
+    -fx-background-color: -fx-primary-color;
+    -fx-border-width: 0px;
+    -fx-margin: 10px;
+}
+
+.text-area .content {
+    -fx-background-color: white;
+    -fx-border-width: 0px;
+}
+
+.text-area:focused .content {
+    -fx-background-color: white;
+}
+
+/*tooltip*/
 .tooltip {
     -fx-text-fill: -fx-primary-color;
 }
 
+/*menu bar*/
 .menu-bar {
     -fx-background-color: -fx-primary-color;
 }
@@ -96,6 +143,123 @@
     -fx-background-color: #eeeeee;
 }
 
+/*combo box*/
+.combo-box-base {
+    -fx-background-color: -fx-primary-color;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-alignment: CENTER;
+    -fx-content-display: LEFT;
+}
+
+.combo-box .arrow-button{
+    -fx-background-color: -fx-secondary-color;
+    -fx-border-radius: 0px;
+    -fx-background-radius: 0px;
+}
+
+.combo-box .arrow-button:hover{
+    -fx-background-color: -fx-primary-gradient;
+}
+
+.combo-box .arrow {
+    -fx-background-color: -fx-primary-color;
+}
+
+/*tab pane*/
+
+.tab-label {
+    -fx-background-color: transparent;    
+    -fx-text-fill: derive(-fx-primary-font-color, 50%);
+}
+
+.tab-content-area {
+    -fx-background-color: white;
+}
+
+.tab {
+    -fx-background-radius: 0px;
+    -fx-background-color: derive(white, -10%);
+    -fx-border-radius: 0px;
+    -fx-border-width: 0px;
+    -fx-border-color: -fx-secondary-color;
+}
+
+.tab:hover *.tab-close-button {
+    -fx-opacity: 100%;
+}
+
+.tab:selected *.tab-close-button {
+    -fx-opacity: 100%;
+    -fx-background-color: -fx-primary-gradient;
+}
+
+.tab:selected *.tab-label {
+    -fx-text-fill: -fx-primary-font-color;
+}
+
+.tab:selected {
+    -fx-background-color: white;
+    -fx-border-color: -fx-primary-gradient;
+}
+
+
+.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-close-button {
+    -fx-background-color: -fx-secondary-color;
+    -fx-shape: -fx-cross-shape;
+    -fx-scale-x: 10;
+    -fx-scale-y: 10;
+    -fx-scale-z: 10;
+    -fx-effect: null;
+    -fx-opacity: 0%;
+}
+
+/*scroll bar*/
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+  
+.scroll-bar .increment-button {
+    -fx-opacity: 0;
+}
+  
+.scroll-bar .decrement-button {
+    -fx-opacity: 0;
+}
+  
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+  
+.scroll-bar .track-background {
+    -fx-opacity: 0;
+}
+  
+.scroll-bar .track {
+    -fx-opacity: 0;
+}
+  
+.scroll-bar .thumb:hover {
+    -fx-background-color: derive(-fx-secondary-color, 40%);
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: derive(-fx-secondary-color, 30%);
+    -fx-background-radius: 0px;
+}
+
+.corner {    
+    -fx-background-color: -fx-secondary-color ;
+}
+
+.toggle-button {
+    -fx-background-color: transparent;
+}
+
 /*Customs*/
 .secondary-button {
     -fx-background-color: -fx-secondary-color;
@@ -110,8 +274,47 @@
 }
 
 .secondary-button:armed {
-    -fx-background-color: #00000000;
+    -fx-background-color: transparent;
     -fx-text-fill: -fx-secondary-color;
     -fx-border-color: -fx-secondary-color;
     -fx-border-width: 3px;
+}
+
+.toggle-vec {
+    -fx-background-color: -fx-secondary-color;
+    -fx-background-radius: 0px;
+    -fx-text-fill: transparent;
+    -fx-shape: -fx-toggle-off;
+    -fx-scale-shape: false;
+}
+
+.toggle-button:selected *.toggle-vec {
+    -fx-shape: -fx-toggle-on;
+}
+
+.toggle-button:hover *.toggle-vec{
+    -fx-background-color: -fx-primary-gradient; 
+}
+
+.toggle-button:selected:hover *.toggle-vec{
+    -fx-background-color: -fx-primary-gradient;
+}
+
+
+.icon-label {
+    -fx-background-color: -fx-primary-gradient;
+    -fx-text-fill: transparent;
+    -fx-scale-shape: false;
+}
+
+.button:hover *.icon-label {
+    -fx-background-color: -fx-primary-color;
+}
+
+.button:armed *.icon-label {
+    -fx-background-color: -fx-primary-gradient;
+}
+
+.secondary-label {
+    -fx-text-fill: -fx-primary-color;
 }

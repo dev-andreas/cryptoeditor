@@ -3,15 +3,16 @@ package com.andreas.main.stages.newSaveStage;
 import java.security.KeyPair;
 
 import com.andreas.main.app.AppController;
+import com.andreas.main.cryptography.CryptoUtils;
 import com.andreas.main.cryptography.RSA;
 import com.andreas.main.save.Save;
+import com.andreas.main.stages.StageUtils;
 import com.andreas.main.stages.loginStage.LoginController;
 import com.andreas.main.stages.loginStage.LoginStage;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -19,7 +20,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 
 public class NewSaveController extends AppController {
-    
+
     @FXML
     public TextField name;
 
@@ -30,30 +31,27 @@ public class NewSaveController extends AppController {
     public PasswordField repeatPassword;
 
     @FXML
-    public Label message;
-
-    @FXML
     public Button create;
 
-    private String filePath;
+    private String keyPath;
 
     @Override
     public void init() {
 
         // Shortcuts
-        Platform.runLater(() -> {        
+        Platform.runLater(() -> {
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
                 createPressed(null);
             });
         });
 
-        LoginStage loginStage = ((NewSaveStage)stage).getLoginStage();
-        LoginController loginController = (LoginController)loginStage.getController();
+        LoginStage loginStage = ((NewSaveStage) stage).getLoginStage();
+        LoginController loginController = (LoginController) loginStage.getController();
 
-        filePath = loginController.keyPath.getText();
+        keyPath = loginController.keyPath.getText();
 
-        if (filePath.isEmpty()) {
-            message.setText("No key path found!");
+        if (keyPath.isEmpty()) {
+            StageUtils.pushNotification("No key path found!");
             create.setDisable(true);
         }
 
@@ -68,35 +66,45 @@ public class NewSaveController extends AppController {
         if (password.getText().equals(repeatPassword.getText())) {
             SecurityNote sn = FulfillsSecurity(password.getText());
 
-            LoginStage loginStage = ((NewSaveStage)stage).getLoginStage();
-            LoginController loginController = (LoginController)loginStage.getController();
+            LoginStage loginStage = ((NewSaveStage) stage).getLoginStage();
+            LoginController loginController = (LoginController) loginStage.getController();
 
             if (loginController.nameExists(name.getText())) {
-                message.setText("Name already exists!");
+                StageUtils.pushNotification("Name already exists!");
                 return;
             }
 
-            message.setText(sn.message);
             if (sn.fulfillsSecurity) {
 
                 Save save = new Save();
 
-                KeyPair kp = RSA.readKeyPair(filePath);
+                KeyPair kp = RSA.readKeyPair(keyPath);
 
                 if (kp == null) {
-                    message.setText("Key path is invalid!");
+                    StageUtils.pushNotification("Key path is invalid!");
                     return;
                 }
 
-                save.initialize(kp, name.getText(), password.getText());
+                save.create(name.getText(), password.getText(), keyPath);
                 
-                
-                ((NewSaveStage)stage).getLoginStage().addSave(save);
+                ((NewSaveStage) stage).getLoginStage().addSave(save);
                 this.stage.close();
+            } else {
+                StageUtils.pushNotification(sn.message);
             }
         } else {
-            message.setText("Passwords do not match!");
+            StageUtils.pushNotification("Passwords do not match!");
         }
+    }
+
+    public void generateRandomPressed(MouseEvent event) {
+        String password = CryptoUtils.GenerateSecurePassword(20, CryptoUtils.ALL_CHARACTERS);
+
+        this.password.setText(password);
+        this.repeatPassword.setText(password);
+
+        StageUtils.CopyTextToClipboard(password);
+        StageUtils.pushNotification("Your password: " + password + "\nPassword is copied to clipboard.");
     }
 
     public static SecurityNote FulfillsSecurity(String password)

@@ -1,8 +1,9 @@
 package com.andreas.main.stages.renameSaveStage;
 
 import com.andreas.main.app.AppController;
-import com.andreas.main.cryptography.RSA;
+import com.andreas.main.cryptography.SHA;
 import com.andreas.main.save.Save;
+import com.andreas.main.stages.StageUtils;
 import com.andreas.main.stages.loginStage.LoginController;
 import com.andreas.main.stages.loginStage.LoginStage;
 
@@ -46,11 +47,11 @@ public class RenameSaveController extends AppController {
         LoginController controller = (LoginController)stage.getController();
 
         int index = controller.savesList.getSelectionModel().getSelectedIndex();
-        
-        Save save = new Save();
-        save.readFromFile("data/saves/" + stage.getSaves().get(index).getId() + ".xml");
 
-        if (!RSA.verify(password.getText(), save.getPasswordCertificate(), save.getPublicKey())) {
+        Save save = new Save();
+        save.read(StageUtils.SAVES_PATH + controller.savesList.getItems().get(index) + "/saveData.xml");
+
+        if (!SHA.verify(password.getText(), save.getPasswordSalt(), save.getPasswordHash())) {
             notification.setText("Passwords do not match!");
             return;
         }

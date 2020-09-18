@@ -12,8 +12,6 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -23,10 +21,20 @@
    <left>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addSave" styleClass="secondary-button" text="+">
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#addSave" styleClass="secondary-button" text="Create save">
                <tooltip>
                   <Tooltip text="Create new save" />
                </tooltip>
+               <graphic>
+                  <Label>
+                     <graphic>
+                        <Label scaleX="15.0" scaleY="15.0" scaleZ="15.0" style="-fx-shape: -fx-plus-shape;" styleClass="icon-label" />
+                     </graphic>
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                  </Label>
+               </graphic>
             </Button>
             <ListView fx:id="savesList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#savePressed" VBox.vgrow="ALWAYS">
                <contextMenu>
@@ -49,55 +57,58 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="OFFLINE VAULT">
+                        <Label text="CRYPTOEDITOR V1.1">
                            <HBox.margin>
-                              <Insets top="20.0" />
+                              <Insets right="40.0" top="20.0" />
                            </HBox.margin>
                         </Label>
-                        <ImageView fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@/lockb3-1000px.png" />
-                           </image>
+                        <Label>
+                           <graphic>
+                              <Label scaleX="100.0" scaleY="100.0" scaleZ="100.0" style="-fx-shape: -fx-lock-shape; -fx-background-color: -fx-primary-gradient;" styleClass="icon-label" />
+                           </graphic>
                            <HBox.margin>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
+                              <Insets right="50.0" />
                            </HBox.margin>
-                        </ImageView>
+                        </Label>
                      </children>
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <Label fx:id="saveName" text="No save selected">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin>
-                  </Label>
-                  <Label text="Password:" />
-                  <PasswordField fx:id="password" alignment="CENTER" maxHeight="26.4" maxWidth="500.0">
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" />
-                     </VBox.margin>
-                  </PasswordField>
-                  <Button fx:id="open" mnemonicParsing="false" onMouseClicked="#openPressed" text="Open">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </Button>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="482.0" VBox.vgrow="ALWAYS">
+                     <children>
+                        <Label fx:id="saveName" text="Welcome!">
+                           <font>
+                              <Font name="System Bold" size="36.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label text="Password:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <PasswordField fx:id="password" alignment="CENTER" maxHeight="26.4" maxWidth="500.0">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </PasswordField>
+                        <Button fx:id="open" mnemonicParsing="false" onMouseClicked="#openPressed" text="Open">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Label>
+                           <font>
+                              <Font size="64.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
-            <Label fx:id="notification">
-               <VBox.margin>
-                  <Insets left="20.0" />
-               </VBox.margin>
-            </Label>
-            <Label fx:id="keyNotification">
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" />
-               </VBox.margin>
-            </Label>
             <HBox prefHeight="9.0" prefWidth="414.0" VBox.vgrow="NEVER">
                <children>
                   <TextField fx:id="keyPath" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="160.0" promptText="Enter key path:">
@@ -105,7 +116,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <Button mnemonicParsing="false" onMouseClicked="#browsePressed" text="Browse">
+                  <Button mnemonicParsing="false" onMouseClicked="#browsePressed" styleClass="secondary-button" text="Browse">
                      <HBox.margin>
                         <Insets bottom="10.0" top="10.0" />
                      </HBox.margin>

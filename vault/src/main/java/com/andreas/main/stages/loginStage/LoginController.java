@@ -19,7 +19,9 @@ import javafx.stage.Modality;
 
 import com.andreas.main.app.AppController;
 import com.andreas.main.cryptography.RSA;
+import com.andreas.main.cryptography.SHA;
 import com.andreas.main.save.Save;
+import com.andreas.main.stages.StageUtils;
 import com.andreas.main.stages.createKeyStage.CreateKeyStage;
 import com.andreas.main.stages.newSaveStage.NewSaveStage;
 import com.andreas.main.stages.removeSaveStage.RemoveSaveStage;
@@ -32,7 +34,7 @@ import java.io.File;
 import java.security.KeyPair;
 import java.util.Arrays;
 
-import com.andreas.main.Utils;
+import com.andreas.main.FileUtils;
 
 public class LoginController extends AppController {
 
@@ -47,12 +49,6 @@ public class LoginController extends AppController {
 
     @FXML
     public TextField keyPath;
-
-    @FXML
-    public Label keyNotification;
-
-    @FXML
-    public Label notification;
 
     @FXML
     public Button open;
@@ -107,21 +103,21 @@ public class LoginController extends AppController {
     public void openPressed(MouseEvent event) {
 
         Save save = new Save();
-        save.readFromFile("data/saves/" + ((LoginStage) stage).getSaves().get(index).getId() + ".xml");
+        save.read(StageUtils.SAVES_PATH + savesList.getItems().get(index) + "/saveData.xml");
 
         if (!keyPathReadable()) {
-            notification.setText("Key file not found!");
+            StageUtils.pushNotification("Key file not found!");
+            return;
+        }
+
+        if (!Arrays.equals(save.getPublicKey().getEncoded(), RSA.readKeyPair(keyPath.getText()).getPublic().getEncoded())) {
+            StageUtils.pushNotification("Selected key file is not compatible!");
             return;
         }
 
         if (passwordMatches(save, password.getText())) {
 
-            save.open(keyPath.getText());
-            if (!Arrays.equals(save.getPublicKey().getEncoded(),
-                    RSA.readKeyPair(keyPath.getText()).getPublic().getEncoded())) {
-                notification.setText("Selected key file is not compatible!");
-                return;
-            }
+            save.open(keyPath.getText(), password.getText());
 
             SaveStage saveStage = new SaveStage(this.stage.getApp(), save);
 
@@ -142,14 +138,14 @@ public class LoginController extends AppController {
             if (alert.getResult() == removed) {
 
                 if (keyPathReadable()) {
-                    notification.setText("Storage medium not removed!");
+                    StageUtils.pushNotification("Storage medium not removed!");
                     return;
                 }
                 saveStage.show();
                 stage.close();
             }
         } else {
-            notification.setText("Password is incorrect!");
+            StageUtils.pushNotification("Password is incorrect!");
         }
     }
 
@@ -170,11 +166,10 @@ public class LoginController extends AppController {
         if (file != null) {
             String path = file.getAbsolutePath();
             keyPath.setText(path);
-            keyNotification.setText("");
 
             if (!keyPathReadable()) {
                 keyPath.setText("");
-                keyNotification.setText("File doesn't contain the necessary data.");
+                StageUtils.pushNotification("File doesn't contain the necessary data.");
             } else 
                 saveKeyPath(path);
         }
@@ -187,7 +182,7 @@ public class LoginController extends AppController {
 
     public boolean passwordMatches(Save save, String password) {
 
-        if (RSA.verify(password, save.getPasswordCertificate(), save.getPublicKey()))
+        if (SHA.verify(password, save.getPasswordSalt(), save.getPasswordHash()))
             return true;
         return false;
     }
@@ -212,13 +207,13 @@ public class LoginController extends AppController {
     }
 
     private void saveKeyPath(String keyPath) {
-        Element root = Utils.readXmlFile("data/saves.xml");
+        Element root = FileUtils.readXmlFile(StageUtils.DATA_FILE_PATH);
         root.getChild("keyPath").setText(keyPath);
-        Utils.createXmlFile("data/saves.xml", root);
+        FileUtils.createXmlFile(StageUtils.DATA_FILE_PATH, root);
     }
 
     private String readKeyPath() {
-        Element root = Utils.readXmlFile("data/saves.xml");
+        Element root = FileUtils.readXmlFile(StageUtils.DATA_FILE_PATH);
         return root.getChildText("keyPath");
     }
 
