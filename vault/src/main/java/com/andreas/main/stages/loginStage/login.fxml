@@ -56,7 +56,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="CRYPTOEDITOR V1.1">
+                        <Label text="CRYPTOEDITOR V1.2">
                            <HBox.margin>
                               <Insets right="40.0" top="20.0" />
                            </HBox.margin>
