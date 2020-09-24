@@ -83,18 +83,6 @@ public class LoginController extends AppController {
             });
         });
 
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.B, KeyCombination.SHORTCUT_DOWN), () -> {
-                // TODO backup
-            });
-        });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), () -> {
-                // TODO load backup
-            });
-        });
-
         setEditable();
 
         keyPath.setText(readKeyPath());

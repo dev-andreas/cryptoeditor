@@ -8,7 +8,7 @@ import javafx.application.Application;
  */
 public class Main {
 
-    //TODO prev path
+    //TODO delete saves
     public static void main(String[] args) {
         Application.launch(App.class, args);
     }

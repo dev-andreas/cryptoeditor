@@ -135,12 +135,20 @@
     -fx-background-color: transparent;
 }
 
+.menu .label {
+    -fx-text-fill: -fx-primary-font-color;
+}
+
 .menu:hover, .menu:armed, .menu:focused {
     -fx-background-color: #dddddd;
 }
 
 .menu-item:hover, .menu-item:armed, .menu-item:focused {
     -fx-background-color: #eeeeee;
+}
+
+.menu-item .label {
+    -fx-text-fill: -fx-primary-font-color;
 }
 
 /*combo box*/

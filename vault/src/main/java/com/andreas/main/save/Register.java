@@ -128,58 +128,70 @@ public class Register {
 
     // GETTERS AND SETTERS
 
-    /**
-     * @return This method returns the name of the register.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * This method sets the name of this register.
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return This method returns the file type of this register.
-     */
+    public byte[] getNameCipher() {
+        return nameCipher;
+    }
+
+    public void setNameCipher(byte[] nameCipher) {
+        this.nameCipher = nameCipher;
+    }
+
     public String getFileType() {
         return fileType;
     }
 
-    /**
-     * This method sets the file type of this register.
-     */
     public void setFileType(String fileType) {
         this.fileType = fileType;
     }
 
-    /**
-     * @return This method returns the content of this register.
-     */
+    public byte[] getFileTypeCipher() {
+        return fileTypeCipher;
+    }
+
+    public void setFileTypeCipher(byte[] fileTypeCipher) {
+        this.fileTypeCipher = fileTypeCipher;
+    }
+
     public byte[] getContent() {
         return content;
     }
 
-    /**
-     * This method sets the content of this register.
-     */
     public void setContent(byte[] content) {
         this.content = content;
     }
 
-    /**
-     * @return  This method returns the IV of this register.
-     */
+    public byte[] getContentCipher() {
+        return contentCipher;
+    }
+
+    public void setContentCipher(byte[] contentCipher) {
+        this.contentCipher = contentCipher;
+    }
+
     public byte[] getIV() {
         return iv;
     }
 
-    /**
-     * @return  This method returns <code>true</code> if the save is open
-     */
+    public void setIV(byte[] iv) {
+        this.iv = iv;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public boolean isOpen() {
         return open;
     }

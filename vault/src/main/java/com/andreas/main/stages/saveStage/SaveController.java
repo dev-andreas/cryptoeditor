@@ -5,8 +5,10 @@ import com.andreas.main.app.RegisterTab;
 import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
 import com.andreas.main.save.SaveTreeItem;
+import com.andreas.main.stages.createBackupStage.CreateBackupStage;
 import com.andreas.main.stages.exportRegisterStage.ExportRegisterStage;
 import com.andreas.main.stages.importRegisterStage.ImportRegisterStage;
+import com.andreas.main.stages.loadBackupStage.LoadBackupStage;
 import com.andreas.main.stages.loginStage.LoginStage;
 import com.andreas.main.stages.newRegisterStage.NewRegisterStage;
 import com.andreas.main.stages.renameRegisterStage.RenameRegisterStage;
@@ -87,13 +89,13 @@ public class SaveController extends AppController {
 
         Platform.runLater(() -> {        
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.B, KeyCombination.SHORTCUT_DOWN), () -> {
-                // TODO backup
+                createBackup();
             });
         });
 
         Platform.runLater(() -> {        
             stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), () -> {
-                // TODO load backup
+                loadBackup();
             });
         });
 
@@ -209,7 +211,7 @@ public class SaveController extends AppController {
 
     @FXML
     public void renameRegister() {
-        RenameRegisterStage stage = new RenameRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        Stage stage = new RenameRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
         stage.show();
     }
 
@@ -222,6 +224,18 @@ public class SaveController extends AppController {
     @FXML
     public void exportRegister() {
         Stage stage = new ExportRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        stage.show();
+    }
+
+    @FXML
+    public void createBackup() {
+        Stage stage = new CreateBackupStage(this.stage.getApp(), (SaveStage)this.stage);
+        stage.show();
+    }
+
+    @FXML
+    public void loadBackup() {
+        Stage stage = new LoadBackupStage(this.stage.getApp(), (SaveStage)this.stage);
         stage.show();
     }
 

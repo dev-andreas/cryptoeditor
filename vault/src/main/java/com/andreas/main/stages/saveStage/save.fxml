@@ -114,8 +114,8 @@
                   <MenuItem mnemonicParsing="false" onAction="#renameRegister" text="Rename Register... (Ctrl + R)" />
                   <MenuItem mnemonicParsing="false" onAction="#renameRegister" text="Delete Register... (Ctrl + D)" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" text="Create backup... (Ctrl + B)" />
-                  <MenuItem mnemonicParsing="false" text="Load backup... (Ctrl + L)" />
+                  <MenuItem mnemonicParsing="false" onAction="#createBackup" text="Create backup... (Ctrl + B)" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadBackup" text="Load backup... (Ctrl + L)" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <Menu mnemonicParsing="false" text="Import / Export">
                     <items>

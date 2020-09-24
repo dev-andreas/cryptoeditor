@@ -36,6 +36,8 @@ public class Save {
 
     private boolean open;
 
+    private String keyPath;
+
     public Save() {
         root = new SaveTreeItem(this);
 
@@ -61,9 +63,12 @@ public class Save {
         currentFileNameIV = CryptoUtils.getRandom16Bytes();
 
         this.secretKey = null;
+        this.keyPath = keyPath;
 
-        String path = StageUtils.SAVES_PATH + name + "/registers";
-        FileUtils.createDirectories(path);
+        String path = StageUtils.SAVES_PATH + name;
+        FileUtils.createDirectories(path + "/registers");
+        FileUtils.createDirectories(path + "/backups");
+        refreshFileNames();
     }
 
     /**
@@ -80,7 +85,7 @@ public class Save {
         root.setName("registers");
         root.setType(Register.DIRECTORY);
 
-        refreshFileNames();
+        this.keyPath = keyPath;
     }
 
     /**
@@ -147,8 +152,8 @@ public class Save {
      * This method initializes the save from the corresponding directory.
      * @see {@link #write(String)}, {@link #create(String, String, String)}.
      */
-    public void read(String registerPath) {
-        Element root = FileUtils.readXmlFile(registerPath);
+    public void read(String savePath) {
+        Element root = FileUtils.readXmlFile(savePath);
 
         // name
         String name = root.getChildText("name");
@@ -256,74 +261,75 @@ public class Save {
 
     // GETTERS AND SETTERS
 
-    /**
-     * @return This method returns the name of the save.
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * This method sets the name of the save.
-     * @param name New name of the save.
-     */
     public void setName(String name) {
         this.name = name;
     }
 
-    /**
-     * @return This method returns the password hash of the save.
-     */
     public byte[] getPasswordHash() {
         return passwordHash;
     }
 
-    /**
-     * @return This method returns the password salt.
-     */
+    public void setPasswordHash(byte[] passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
     public byte[] getPasswordSalt() {
         return passwordSalt;
     }
 
-    /**
-     * @return This method returns the public key of the save.
-     */
+    public void setPasswordSalt(byte[] passwordSalt) {
+        this.passwordSalt = passwordSalt;
+    }
+
     public PublicKey getPublicKey() {
         return publicKey;
     }
 
-    /**
-     * @return This method will return the RegisterTreeItem root.
-     */
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
     public SaveTreeItem getRoot() {
         return root;
     }
 
-    /**
-     * @return This method returns <code>true</code> if the save is open.
-     */
+    public void setRoot(SaveTreeItem root) {
+        this.root = root;
+    }
+
     public boolean isOpen() {
         return open;
     }
 
-    /**
-     * @return This method returns the current file name iv.
-     */
     public byte[] getCurrentFileNameIV() {
         return currentFileNameIV;
     }
 
-    /**
-     * @return This method returns the previous export directory.
-     */
+    public void setCurrentFileNameIV(byte[] currentFileNameIV) {
+        this.currentFileNameIV = currentFileNameIV;
+    }
+
     public String getPrevExportDir() {
         return prevExportDir;
     }
 
-    /**
-     * @return This method sets the previous export directory.
-     */
     public void setPrevExportDir(String prevExportDir) {
         this.prevExportDir = prevExportDir;
+    }
+
+    public byte[] getDataSaltCipher() {
+        return dataSaltCipher;
+    }
+    
+    public void setDataSaltCipher(byte[] dataSaltCipher) {
+        this.dataSaltCipher = dataSaltCipher;
+    }
+
+    public String getKeyPath() {
+        return keyPath;
     }
 }

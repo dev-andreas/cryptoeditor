@@ -1,4 +1,4 @@
-package com.andreas.main.stages.createBackupStage;
+package com.andreas.main.stages.loadBackupStage;
 
 import com.andreas.main.app.AppStage;
 import com.andreas.main.stages.saveStage.SaveStage;
@@ -6,15 +6,15 @@ import com.andreas.main.stages.saveStage.SaveStage;
 import javafx.application.Application;
 import javafx.stage.Modality;
 
-public class CreateBackupStage extends AppStage {
+public class LoadBackupStage extends AppStage {
 
     private SaveStage saveStage;
 
-    public CreateBackupStage(Application app, SaveStage saveStage) {
-        super(app, "stages/createBackupStage/createBackup.fxml");
-        setTitle("Create backup");
+    public LoadBackupStage(Application app, SaveStage saveStage) {
+        super(app, "stages/loadBackupStage/loadBackup.fxml");
+        setTitle("Load backup");
         setResizable(false);
-        initModality(Modality.WINDOW_MODAL);
+        initModality(Modality.APPLICATION_MODAL);
 
         this.saveStage = saveStage;
 

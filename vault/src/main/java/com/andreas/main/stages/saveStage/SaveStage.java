@@ -60,7 +60,6 @@ public class SaveStage extends AppStage {
         item.setType(register.getFileType());
         ((SaveController)getController()).selectedDirectory.addChild(item);
 
-
         if (item.getType().equals(Register.DIRECTORY)) {
             FileUtils.createDirectories(item.calculatePath());
         } else {
@@ -100,7 +99,10 @@ public class SaveStage extends AppStage {
         item.getParent().getChildren().remove(item);
     }
 
-    private void loadRegisters() {
+    public void loadRegisters() {
+        save.setRoot(new SaveTreeItem(save));
+        save.getRoot().setName("registers");
+        save.getRoot().setType(Register.DIRECTORY);
         ((SaveController)getController()).registers.setRoot(getSave().getRoot());
 
         Path path = Paths.get(StageUtils.SAVES_PATH + getSave().getName() + "/registers");
