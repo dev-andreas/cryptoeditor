@@ -8,3 +8,7 @@
 ## V1.2
 - Save Backups
 - Bug fixes
+
+## V1.3
+- Image display (PNG, JPEG, GIF, BMP)
+- Updated stylesheet
