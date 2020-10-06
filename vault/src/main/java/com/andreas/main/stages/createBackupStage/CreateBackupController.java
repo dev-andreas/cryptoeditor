@@ -12,7 +12,7 @@ import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
 import com.andreas.main.save.SaveTreeItem;
 import com.andreas.main.stages.StageUtils;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import org.jdom2.Element;
 
@@ -21,7 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
-public class CreateBackupController extends AppController{
+public class CreateBackupController extends AppController {
 
     @FXML
     private Label saveName;
@@ -32,13 +32,13 @@ public class CreateBackupController extends AppController{
     @FXML
     private TextField filePath;
 
-    private SaveStage saveStage;
     private Save save;
+    private SaveScene saveScene;
 
     @Override
     public void init() {
-        saveStage = ((CreateBackupStage)stage).getSaveStage();
-        save = saveStage.getSave();
+        saveScene = ((CreateBackupStage)getScene().getStage()).getSaveScene();
+        save = saveScene.getSave();
 
         Calendar calendar = Calendar.getInstance();
 
@@ -61,19 +61,27 @@ public class CreateBackupController extends AppController{
     public void createPressed() {
         if (filePath.getText().isEmpty())
             return;
-        
-        if (!Files.exists(Paths.get(filePath.getText())))
+
+        if (!Files.exists(Paths.get(filePath.getText()))) {
             StageUtils.pushNotification("Path does not exist!");
+            return;
+        }
 
-        Element backup = backup();
+        
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Creating backup...");
+            Element backup = backup();
 
-        FileUtils.createXmlFile(filePath.getText() + "/" + backupName.getText(), backup);
+            FileUtils.createXmlFile(filePath.getText() + "/" + backupName.getText(), backup);
 
-        stage.close();
+            action.endNow(endingAction -> {
+                getScene().getStage().close();
+            });
+        });
     }
 
     public void cancelPressed() {
-        stage.close();
+        getScene().getStage().close();
     }
 
     private Element backup() {

@@ -1,12 +1,17 @@
 package com.andreas.main.app;
 
-import java.io.IOException;
+import java.util.ConcurrentModificationException;
+import java.util.Stack;
+import java.util.function.Consumer;
+
+import com.andreas.main.scenes.loadingScene.LoadingScene;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.collections.ObservableMap;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 /**
@@ -17,56 +22,81 @@ import javafx.stage.Stage;
 public abstract class AppStage extends Stage {
     
     private Application app;
-    private FXMLLoader loader;
 
-    private AppController controller;
+    private Scene scene;
+    private StackPane root;
+    private Stack<ObservableMap<KeyCombination, Runnable>> accelerators;
+
+    private boolean loading;
 
     /**
      * @param app The <code>javafx.application.Application</code> of this stage.
      * @param fxmlPath The path where the .fxml file of this stage is located.
      */
-    public AppStage(Application app, String fxmlPath) {
+    public AppStage(Application app) {
         this.app = app;
 
-        try {
-            loader = new FXMLLoader(app.getClass().getResource(fxmlPath));
-            Parent root = loader.load();
+        root = new StackPane();
+        accelerators = new Stack<>();
 
-            controller = loader.getController();
-    
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add("stylesheets/stylesheet.css");
-            setScene(scene);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        controller.setStage(this);
+        scene = new Scene(root);
+        scene.getStylesheets().add("stylesheets/stylesheet.css");
+        super.setScene(scene);
 
         getIcons().add(new Image("lockb0.5-256px.png"));
+
+        loading = false;
     }
 
-    /**
-     * This method must be called inside every constructor of a class that inherits <code>AppStage</code>.
-     */
-    public void init() {
-        controller.init();
+    public void setScene(AppScene scene) {
+        popScene();
+        pushScene(scene);
+    }
+
+    public void pushScene(AppScene scene) {
+        if (loading) 
+            return;
+        if (scene instanceof LoadingScene) 
+            loading = true;
+
+        root.getChildren().add(scene.getRoot());
+        setTitle(scene.getTitle());
+        scene.setStage(this);
+        scene.init();
+
+        accelerators.push(scene.getAccelerators());
+        setAccelerators();
+    }
+
+    public void popScene() {
+        loading = false;
+        if (root.getChildren().size() > 1) {
+            root.getChildren().remove(root.getChildren().size() - 1);
+            accelerators.pop();
+            setAccelerators();
+        }
+    }
+
+    public void setAccelerators() {
+        try {
+            getScene().getAccelerators().clear();
+        } catch (ConcurrentModificationException e) { }
+        getScene().getAccelerators().putAll(accelerators.peek());
+    }
+
+    public LoadingScene applyLoadingScene(Consumer<LoadingScene> action) {
+        LoadingScene loadingScene = new LoadingScene(app, action);
+        pushScene(loadingScene);
+        return loadingScene;
     }
 
     // GETTERS AND SETTERS
 
-    /**
-     * @return This method returns the corresponding <code>AppController</code> of this stage.
-     */
-    public AppController getController() {
-        return controller;
-    }
-
-    /**
-     * @return This method returns the corresponding <code>javafx.application.Application</code> of this stage.
-     */
     public Application getApp() {
         return app;
+    }
+
+    public StackPane getRoot() {
+        return root;
     }
 }

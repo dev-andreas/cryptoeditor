@@ -19,6 +19,13 @@ public class Register {
         DIRECTORY,
     };
 
+    public static final String[] ACCEPTED_IMAGE_FILE_TYPES = new String[] {
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".bmp",
+    };
+
     // CLASS
 
     private byte[] iv, nameCipher, fileTypeCipher, contentCipher, content;

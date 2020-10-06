@@ -1,7 +1,7 @@
 package com.andreas.main.app;
 
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
@@ -13,8 +13,8 @@ public class BinaryTab extends RegisterTab {
     private VBox box;
     private Text text;
 
-    public BinaryTab(SaveStage saveStage, Register register) {
-        super(saveStage, register, false);
+    public BinaryTab(SaveScene saveScene, Register register) {
+        super(saveScene, register, false);
 
         text = new Text("This register seems binary and thus can't be opened.");
         text.setFill(new Color(.60, .60, .60, 1));

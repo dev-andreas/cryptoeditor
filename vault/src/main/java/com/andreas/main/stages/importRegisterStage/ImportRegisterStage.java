@@ -1,27 +1,26 @@
 package com.andreas.main.stages.importRegisterStage;
 
+import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppStage;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.application.Application;
 import javafx.stage.Modality;
 
 public class ImportRegisterStage extends AppStage {
 
-    private SaveStage saveStage;
+    private SaveScene saveScene;
 
-    public ImportRegisterStage(Application app, SaveStage saveStage) {
-        super(app, "stages/importRegisterStage/importRegister.fxml");
-        setTitle("Import");
+    public ImportRegisterStage(Application app, SaveScene saveScene) {
+        super(app);
         setResizable(false);
         initModality(Modality.WINDOW_MODAL);
 
-        this.saveStage = saveStage;
-
-        init();
+        this.saveScene = saveScene;
+        setScene(new AppScene(app, "stages/importRegisterStage/importRegister.fxml", "Import"));
     }
 
-    public SaveStage getSaveStage() {
-        return saveStage;
+    public SaveScene getSaveScene() {
+        return saveScene;
     }
 }

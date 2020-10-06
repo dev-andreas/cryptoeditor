@@ -1,27 +1,26 @@
 package com.andreas.main.stages.renameRegisterStage;
 
+import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppStage;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.application.Application;
 import javafx.stage.Modality;
 
 public class RenameRegisterStage extends AppStage {
 
-    private SaveStage saveStage;
+    private SaveScene saveScene;
 
-    public RenameRegisterStage(Application app, SaveStage saveStage) {
-        super(app, "stages/renameRegisterStage/renameRegister.fxml");
-        setTitle("Rename register");
+    public RenameRegisterStage(Application app, SaveScene saveScene) {
+        super(app);
         setResizable(false);
         initModality(Modality.APPLICATION_MODAL);
 
-        this.saveStage = saveStage;
-
-        init();
+        this.saveScene = saveScene;
+        setScene(new AppScene(app, "stages/renameRegisterStage/renameRegister.fxml", "Rename register"));
     }
 
-    public SaveStage getSaveStage() {
-        return saveStage;
+    public SaveScene getSaveScene() {
+        return saveScene;
     }
 }

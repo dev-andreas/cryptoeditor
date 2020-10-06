@@ -1,27 +1,26 @@
 package com.andreas.main.stages.newSaveStage;
 
+import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppStage;
-import com.andreas.main.stages.loginStage.LoginStage;
+import com.andreas.main.stages.mainStage.scenes.loginScene.LoginScene;
 
 import javafx.application.Application;
 import javafx.stage.Modality;
 
 public class NewSaveStage extends AppStage {
     
-    private LoginStage loginStage;
+    private LoginScene loginScene;
 
-    public NewSaveStage(Application app, LoginStage loginStage) {
-        super(app, "stages/newSaveStage/newSave.fxml");
-        setTitle("New save");
+    public NewSaveStage(Application app, LoginScene loginScene) {
+        super(app);
         setResizable(false);
         initModality(Modality.APPLICATION_MODAL);
 
-        this.loginStage = loginStage;
-
-        init();
+        this.loginScene = loginScene;
+        setScene(new AppScene(app, "stages/newSaveStage/newSave.fxml", "New save"));
     }
 
-    public LoginStage getLoginStage() {
-        return loginStage;
+    public LoginScene getLoginScene() {
+        return loginScene;
     }
 }

@@ -1,7 +1,7 @@
 * {
     -fx-primary-gradient: linear-gradient(to bottom right, #014fff, #ea00ff);
     -fx-primary-color: #eeeeee;
-    -fx-secondary-color: #333333;
+    -fx-secondary-color: #444444;
 
     -fx-primary-font-color: #444444;
 
@@ -50,7 +50,7 @@
 
 /*text field*/
 .text-field {
-    -fx-background-color: #00000000;
+    -fx-background-color: transparent;
     -fx-border-color: -fx-secondary-color;
     -fx-border-width: 0px 0px 1px 0px;
 }
@@ -65,49 +65,49 @@
 
 /*list view*/
 .list-view {
-    -fx-background-color: -fx-primary-font-color;
+    -fx-background-color: derive(-fx-primary-color, -10%);
 }
 
 .list-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: -fx-primary-color;
+    -fx-text-fill: -fx-primary-font-color;
 }
 
 .list-cell:filled:hover {
-    -fx-background-color: derive(-fx-secondary-color, 20%);
+    -fx-background-color: derive(-fx-primary-color, -5%);
 }
 
 .list-cell:filled:selected {
-    -fx-background-color: derive(-fx-secondary-color, 30%);
+    -fx-background-color: derive(-fx-primary-color, 25%);
 }
 
 /*tree view*/
 .tree-view {
-    -fx-background-color: -fx-primary-font-color;
+    -fx-background-color: derive(-fx-primary-color, -10%);
 }
 
 .tree-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: -fx-primary-color;
+    -fx-text-fill: -fx-primary-font-color;
 }
 
 .tree-cell:filled:hover {
-    -fx-background-color: derive(-fx-secondary-color, 20%);
+    -fx-background-color: derive(-fx-primary-color, -5%);
 }
 
 .tree-cell:filled:selected {
-    -fx-background-color: derive(-fx-secondary-color, 30%);
+    -fx-background-color: derive(-fx-primary-color, 25%);
 }
 
 .tree-cell > .tree-disclosure-node > .arrow  {
     -fx-shape: -fx-arrow-right-shape;
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color: -fx-secondary-color;
 }
 
 /*text area*/
 .text-area {
     -fx-text-fill: -fx-secondary-color;
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color: white;
     -fx-border-width: 0px;
     -fx-margin: 10px;
 }
@@ -115,6 +115,7 @@
 .text-area .content {
     -fx-background-color: white;
     -fx-border-width: 0px;
+    -fx-border-radius: 0px;
 }
 
 .text-area:focused .content {
@@ -250,42 +251,57 @@
 .scroll-bar .track {
     -fx-opacity: 0;
 }
-  
-.scroll-bar .thumb:hover {
-    -fx-background-color: derive(-fx-secondary-color, 40%);
-}
 
 .scroll-bar .thumb {
-    -fx-background-color: derive(-fx-secondary-color, 30%);
+    -fx-background-color: derive(-fx-primary-color, -10%);
     -fx-background-radius: 0px;
 }
 
+
 .corner {    
-    -fx-background-color: -fx-secondary-color ;
+    -fx-background-color: derive(-fx-primary-color, -10%);
 }
 
 .toggle-button {
     -fx-background-color: transparent;
 }
 
+/*slider*/
+.slider .thumb {
+    -fx-background-color: derive(white, -5%);
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);
+}
+
+.slider .track {
+    -fx-background-color: derive(white, -10%);
+    -fx-background-insets: 1 1 1 1, 0, 0;
+}
+
+/*progress indicator*/
+
+.progress-indicator:indeterminate .segment {
+    -fx-background-color: -fx-primary-gradient;
+    -fx-shape: "M 25 0 L 30 0 L 30 25 L 55 25 L 55 30 L 30 30 L 30 55 L 25 55 L 25 30 L 0 30 L 0 25 L 25 25 Z";
+}
+
 /*Customs*/
 .secondary-button {
-    -fx-background-color: -fx-secondary-color;
+    -fx-background-color: -fx-primary-color;
+    -fx-border-width: 0px 0px 3px 0px;
+    -fx-border-color: -fx-secondary-color;
     -fx-background-radius: 0px;
-    -fx-text-fill: -fx-primary-color;
+    -fx-text-fill: -fx-primary-font-color;
     -fx-border-radius: 0px;   
 }
 
 .secondary-button:hover {
-    -fx-background-color: -fx-primary-gradient;
-    -fx-text-fill: -fx-primary-color;
+    -fx-border-color: -fx-primary-gradient;
 }
 
 .secondary-button:armed {
-    -fx-background-color: transparent;
-    -fx-text-fill: -fx-secondary-color;
-    -fx-border-color: -fx-secondary-color;
-    -fx-border-width: 3px;
+    -fx-background-color: -fx-secondary-color;
+    -fx-text-fill: -fx-primary-color;
+    -fx-border-color: -fx-primary-gradient;
 }
 
 .toggle-vec {
@@ -316,11 +332,11 @@
 }
 
 .button:hover *.icon-label {
-    -fx-background-color: -fx-primary-color;
+    -fx-background-color: -fx-primary-gradient;
 }
 
 .button:armed *.icon-label {
-    -fx-background-color: -fx-primary-gradient;
+    -fx-background-color: -fx-primary-color;
 }
 
 .secondary-label {

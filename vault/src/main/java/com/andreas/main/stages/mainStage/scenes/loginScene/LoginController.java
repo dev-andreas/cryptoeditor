@@ -1,6 +1,5 @@
-package com.andreas.main.stages.loginStage;
+package com.andreas.main.stages.mainStage.scenes.loginScene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -23,10 +22,10 @@ import com.andreas.main.cryptography.SHA;
 import com.andreas.main.save.Save;
 import com.andreas.main.stages.StageUtils;
 import com.andreas.main.stages.createKeyStage.CreateKeyStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 import com.andreas.main.stages.newSaveStage.NewSaveStage;
 import com.andreas.main.stages.removeSaveStage.RemoveSaveStage;
 import com.andreas.main.stages.renameSaveStage.RenameSaveStage;
-import com.andreas.main.stages.saveStage.SaveStage;
 
 import org.jdom2.Element;
 
@@ -59,28 +58,20 @@ public class LoginController extends AppController {
     public void init() {
 
         // Shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                openPressed(null);
-            });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            openPressed(null);
         });
 
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
-                addSave();
-            });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
+            addSave();
         });
 
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN), () -> {
-                renameSave();
-            });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN), () -> {
+            renameSave();
         });
 
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
-                deleteSave();
-            });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
+            deleteSave();
         });
 
         setEditable();
@@ -90,55 +81,63 @@ public class LoginController extends AppController {
 
     public void openPressed(MouseEvent event) {
 
-        Save save = new Save();
-        save.read(StageUtils.SAVES_PATH + savesList.getItems().get(index) + "/saveData.xml");
+        getScene().getStage().applyLoadingScene(action -> {
 
-        if (!keyPathReadable()) {
-            StageUtils.pushNotification("Key file not found!");
-            return;
-        }
+            action.setText("Opening...");
 
-        if (!Arrays.equals(save.getPublicKey().getEncoded(), RSA.readKeyPair(keyPath.getText()).getPublic().getEncoded())) {
-            StageUtils.pushNotification("Selected key file is not compatible!");
-            return;
-        }
+            Save save = new Save();
+            save.read(StageUtils.SAVES_PATH + savesList.getItems().get(index) + "/saveData.xml");
 
-        if (passwordMatches(save, password.getText())) {
-
-            save.open(keyPath.getText(), password.getText());
-
-            SaveStage saveStage = new SaveStage(this.stage.getApp(), save);
-
-            ButtonType openAnyway = new ButtonType("Open anyway");
-            ButtonType removed = new ButtonType("I removed it");
-            Alert alert = new Alert(AlertType.WARNING, "Please remove your storage medium in which the key is located.", 
-            removed, openAnyway);
-
-            alert.initModality(Modality.WINDOW_MODAL);
-
-            alert.showAndWait();
-
-            if (alert.getResult() == openAnyway) {
-                stage.close();
-                saveStage.show();
+            if (!keyPathReadable()) {
+                action.endNow(endingAction -> {
+                    StageUtils.pushNotification("Key file not found!");
+                });
+                return;
             }
 
-            if (alert.getResult() == removed) {
-
-                if (keyPathReadable()) {
-                    StageUtils.pushNotification("Storage medium not removed!");
-                    return;
-                }
-                saveStage.show();
-                stage.close();
+            if (!Arrays.equals(save.getPublicKey().getEncoded(), RSA.readKeyPair(keyPath.getText()).getPublic().getEncoded())) {
+                action.endNow(endingAction -> {
+                    StageUtils.pushNotification("Selected key file is not compatible!");
+                });
+                return;
             }
-        } else {
-            StageUtils.pushNotification("Password is incorrect!");
-        }
+
+            if (passwordMatches(save, password.getText())) {
+
+                save.open(keyPath.getText(), password.getText());
+
+                action.endNow(endingAction -> {
+                    ButtonType openAnyway = new ButtonType("Open anyway");
+                    ButtonType removed = new ButtonType("I removed it");
+                    Alert alert = new Alert(AlertType.WARNING, "Please remove your storage medium in which the key is located.", 
+                    removed, openAnyway);
+
+                    alert.initModality(Modality.WINDOW_MODAL);
+
+                    alert.showAndWait();
+
+                    if (alert.getResult() == openAnyway) {
+                        getScene().getStage().setScene(new SaveScene(getScene().getStage().getApp(), save));
+                    }
+
+                    if (alert.getResult() == removed) {
+
+                        if (keyPathReadable()) {
+                            StageUtils.pushNotification("Storage medium not removed!");
+                            return;
+                        }
+                        getScene().getStage().setScene(new SaveScene(getScene().getStage().getApp(), save));
+                    }
+                });
+            } else {
+                action.endNow(endingAction -> {
+                    StageUtils.pushNotification("Password is incorrect!");
+                });
+            }
+        });
     }
 
     public void savePressed(MouseEvent event) {
-        
         index = savesList.getSelectionModel().getSelectedIndex();
         if (index < 0)
             return;
@@ -164,7 +163,7 @@ public class LoginController extends AppController {
     }
 
     public void addKeyPressed(MouseEvent event) {
-        CreateKeyStage stage = new CreateKeyStage(this.stage.getApp());
+        CreateKeyStage stage = new CreateKeyStage(getScene().getStage().getApp());
         stage.show();
     }
 
@@ -176,17 +175,17 @@ public class LoginController extends AppController {
     }
 
     public void addSave() {
-        NewSaveStage stage = new NewSaveStage(this.stage.getApp(), (LoginStage)this.stage);
+        NewSaveStage stage = new NewSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
         stage.show();
     }
 
     public void deleteSave() {
-        RemoveSaveStage stage = new RemoveSaveStage(this.stage.getApp(), (LoginStage)this.stage);
+        RemoveSaveStage stage = new RemoveSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
         stage.show();
     }
 
     public void renameSave() {
-        RenameSaveStage stage = new RenameSaveStage(this.stage.getApp(), (LoginStage)this.stage);
+        RenameSaveStage stage = new RenameSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
         stage.show();
     }
 

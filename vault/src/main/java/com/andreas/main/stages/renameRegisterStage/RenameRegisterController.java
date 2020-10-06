@@ -2,10 +2,9 @@ package com.andreas.main.stages.renameRegisterStage;
 
 import com.andreas.main.app.AppController;
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.saveStage.SaveController;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveController;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -28,18 +27,19 @@ public class RenameRegisterController extends AppController{
     @FXML
     public ComboBox<String> registerType;
 
+    private SaveController saveController;
+    private SaveScene saveScene;
+
     @Override
     public void init() {
 
-        // Shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                renamePressed(null);
-            });
-        });
+        saveScene = ((RenameRegisterStage) getScene().getStage()).getSaveScene();
+        saveController = (SaveController) saveScene.getController();
 
-        SaveStage saveStage = ((RenameRegisterStage)stage).getSaveStage();
-        SaveController saveController = (SaveController)saveStage.getController();
+        // Shortcuts      
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            renamePressed(null);
+        });
 
         oldName.setText("Rename\"" + saveController.selectedItem.getName() + "\"");
         registerType.setValue(saveController.selectedItem.getType());
@@ -48,25 +48,27 @@ public class RenameRegisterController extends AppController{
     }
 
     public void renamePressed(MouseEvent event) {
-        SaveStage stage = ((RenameRegisterStage)this.stage).getSaveStage();
-        SaveController controller = (SaveController)stage.getController();
 
         if (newName.getText().isEmpty()) {
             message.setText("Please enter a name!");
             return;
         }
 
-        if (controller.nameExists(newName.getText() + registerType.getValue())) {
+        if (saveController.nameExists(newName.getText() + registerType.getValue())) {
             message.setText("Name already exists!");
             return;
         }
         
-        stage.renameRegister(newName.getText(), registerType.getValue());
-
-        this.stage.close();
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Renaming register...");
+            saveScene.renameRegister(newName.getText(), registerType.getValue());
+            action.endNow(endingAction -> {
+                getScene().getStage().close();
+            });
+        });
     }
 
     public void cancelPressed(MouseEvent event) {
-        stage.close();
+        getScene().getStage().close();
     }
 }

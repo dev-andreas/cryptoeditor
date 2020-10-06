@@ -8,10 +8,9 @@ import com.andreas.main.FileUtils;
 import com.andreas.main.app.AppController;
 import com.andreas.main.save.Register;
 import com.andreas.main.save.SaveTreeItem;
-import com.andreas.main.stages.saveStage.SaveController;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveController;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -31,24 +30,22 @@ public class ExportRegisterController extends AppController {
     @FXML
     public TextField filePath;
 
-    SaveStage saveStage;
+    SaveScene saveScene;
     SaveController saveController;
 
     @Override
     public void init() {
-        // Shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                exportPressed(null);
-            });
+        // Shortcuts      
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            exportPressed(null);
         });
         
-        saveStage = ((ExportRegisterStage)stage).getSaveStage();
-        saveController = (SaveController) saveStage.getController();
+        saveScene = (SaveScene) ((ExportRegisterStage) getScene().getStage()).getSaveScene();
+        saveController = (SaveController) saveScene.getController();
 
         name.setText(saveController.selectedItem.getName());
         type.setText(saveController.selectedItem.getType());
-        filePath.setText(saveStage.getSave().getPrevExportDir());
+        filePath.setText(saveScene.getSave().getPrevExportDir());
     }
     
     public void exportPressed(MouseEvent event) {
@@ -59,13 +56,15 @@ public class ExportRegisterController extends AppController {
         if (Files.notExists(Paths.get(filePath.getText())))
             return;
 
-        exportRegister(saveController.selectedItem, filePath.getText());
-
-        stage.close();
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Exporting register...");
+            exportRegister(saveController.selectedItem, filePath.getText());
+            action.endNow(endingAction -> {getScene().getStage().close();});
+        });
     }
 
     public void cancelPressed(MouseEvent event) {
-        stage.close();
+        getScene().getStage().close();
     }
 
     public void browsePressed(MouseEvent event) {
@@ -86,7 +85,7 @@ public class ExportRegisterController extends AppController {
         } else {
             Register r = new Register(item.calculatePath());
             r.read();
-            saveStage.getSave().openRegister(r);
+            saveScene.getSave().openRegister(r);
             if (Files.exists(Paths.get(path + "/" + name.getText() + type.getText())))
                 FileUtils.createBinaryFile(path + "/" + item.getName() + "I" + item.getType(), r.getContent());
             else
@@ -94,8 +93,8 @@ public class ExportRegisterController extends AppController {
             r.close();
         }
 
-        saveStage.getSave().setPrevExportDir(filePath.getText());
+        saveScene.getSave().setPrevExportDir(filePath.getText());
 
-        saveStage.getSave().write();
+        saveScene.getSave().write();
     }
 }

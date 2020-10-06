@@ -7,10 +7,9 @@ import com.andreas.main.cryptography.CryptoUtils;
 import com.andreas.main.cryptography.RSA;
 import com.andreas.main.save.Save;
 import com.andreas.main.stages.StageUtils;
-import com.andreas.main.stages.loginStage.LoginController;
-import com.andreas.main.stages.loginStage.LoginStage;
+import com.andreas.main.stages.mainStage.scenes.loginScene.LoginController;
+import com.andreas.main.stages.mainStage.scenes.loginScene.LoginScene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -35,18 +34,19 @@ public class NewSaveController extends AppController {
 
     private String keyPath;
 
+    private LoginScene loginScene;
+    private LoginController loginController;
+
     @Override
     public void init() {
+        
+        loginScene = ((NewSaveStage)getScene().getStage()).getLoginScene();
+        loginController = (LoginController) loginScene.getController();
 
         // Shortcuts
-        Platform.runLater(() -> {
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                createPressed(null);
-            });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            createPressed(null);
         });
-
-        LoginStage loginStage = ((NewSaveStage) stage).getLoginStage();
-        LoginController loginController = (LoginController) loginStage.getController();
 
         keyPath = loginController.keyPath.getText();
 
@@ -59,15 +59,12 @@ public class NewSaveController extends AppController {
     }
 
     public void cancelPressed(MouseEvent mouseEvent) {
-        stage.close();
+        getScene().getStage().close();
     }
 
     public void createPressed(MouseEvent mouseEvent) {
         if (password.getText().equals(repeatPassword.getText())) {
             SecurityNote sn = FulfillsSecurity(password.getText());
-
-            LoginStage loginStage = ((NewSaveStage) stage).getLoginStage();
-            LoginController loginController = (LoginController) loginStage.getController();
 
             if (loginController.nameExists(name.getText())) {
                 StageUtils.pushNotification("Name already exists!");
@@ -76,19 +73,25 @@ public class NewSaveController extends AppController {
 
             if (sn.fulfillsSecurity) {
 
-                Save save = new Save();
+                getScene().getStage().applyLoadingScene(action -> {
+                    action.setText("Creating new save...");
+                    Save save = new Save();
 
-                KeyPair kp = RSA.readKeyPair(keyPath);
-
-                if (kp == null) {
-                    StageUtils.pushNotification("Key path is invalid!");
-                    return;
-                }
-
-                save.create(name.getText(), password.getText(), keyPath);
-                
-                ((NewSaveStage) stage).getLoginStage().addSave(save);
-                this.stage.close();
+                    KeyPair kp = RSA.readKeyPair(keyPath);
+    
+                    if (kp == null) {
+                        action.endNow(endingAction -> {
+                            StageUtils.pushNotification("Key path is invalid!");
+                        });
+                    }
+    
+                    save.create(name.getText(), password.getText(), keyPath);
+                    
+                    loginScene.addSave(save);
+                    action.endNow(endingAction -> {
+                        getScene().getStage().close();
+                    });
+                });
             } else {
                 StageUtils.pushNotification(sn.message);
             }

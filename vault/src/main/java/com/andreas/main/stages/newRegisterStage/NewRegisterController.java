@@ -3,10 +3,9 @@ package com.andreas.main.stages.newRegisterStage;
 import com.andreas.main.app.AppController;
 import com.andreas.main.save.Register;
 import com.andreas.main.stages.StageUtils;
-import com.andreas.main.stages.saveStage.SaveController;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveController;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -22,13 +21,18 @@ public class NewRegisterController extends AppController {
     @FXML
     public ComboBox<String> registerType;
 
+    private SaveScene saveScene;
+    private SaveController saveController;
+
     @Override
     public void init() {
-        // Shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                createPressed(null);
-            });
+
+        saveScene = ((NewRegisterStage) getScene().getStage()).getSaveScene();
+        saveController = (SaveController)saveScene.getController();
+
+        // Shortcuts      
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            createPressed(null);
         });
 
         registerType.getItems().addAll(Register.INTERN_FILE_TYPES);
@@ -36,8 +40,7 @@ public class NewRegisterController extends AppController {
     }
 
     public void createPressed(MouseEvent event) {
-        SaveStage saveStage = ((NewRegisterStage)stage).getSaveStage();
-        SaveController saveController = (SaveController)saveStage.getController();
+        
 
         if (registerName.getText().isEmpty()) {
             StageUtils.pushNotification("Please enter a register name!");
@@ -49,12 +52,16 @@ public class NewRegisterController extends AppController {
             return;
         }
 
-        saveStage.addRegister(registerName.getText(), registerType.getValue());
-
-        stage.close();
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Creating register...");
+            saveScene.addRegister(registerName.getText(), registerType.getValue());
+            action.endNow(endingAction -> {
+                getScene().getStage().close();
+            });
+        });
     }
 
     public void cancelPressed(MouseEvent event) {
-        stage.close();
+        getScene().getStage().close();
     }
 }

@@ -10,13 +10,11 @@ import java.util.stream.Stream;
 import com.andreas.main.FileUtils;
 import com.andreas.main.app.AppController;
 import com.andreas.main.save.Register;
-import com.andreas.main.save.Save;
 import com.andreas.main.save.SaveTreeItem;
 import com.andreas.main.stages.StageUtils;
-import com.andreas.main.stages.saveStage.SaveController;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveController;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -48,24 +46,20 @@ public class ImportRegisterController extends AppController {
     @FXML
     public ToggleButton deleteFile;
 
-    private Save save;
-    private SaveStage saveStage;
+    private SaveScene saveScene;
     private SaveController saveController;
 
     @Override
     public void init() {
-        // Shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                importPressed(null);
-            });
+        // Shortcuts       
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            importPressed(null);
         });
 
         deleteFile.setSelected(true);
 
-        saveStage = ((ImportRegisterStage)stage).getSaveStage();
-        saveController = (SaveController)saveStage.getController();
-        save = saveStage.getSave();
+        saveScene = ((ImportRegisterStage)getScene().getStage()).getSaveScene();
+        saveController = (SaveController) saveScene.getController();
     }
 
     public void importPressed(MouseEvent event) {
@@ -77,24 +71,26 @@ public class ImportRegisterController extends AppController {
         if (!Files.exists(path))
             return;
         
-        SaveTreeItem root = new SaveTreeItem(save);
+        SaveTreeItem root = new SaveTreeItem(saveScene.getSave());
 
         if (saveController.nameExists(name.getText() + type.getText())) {
             StageUtils.pushNotification("Name \"" + name.getText() + type.getText() + "\"already exists!");
             return;
         }
 
-        saveController.selectedDirectory.addChild(root);
-        loadDirectory(path, root);
-
-        if (deleteFile.isSelected()) {
-            if (root.getType().equals(Register.DIRECTORY))
-                FileUtils.deleteDirectory(path.toString());
-            else 
-                FileUtils.deleteFile(path.toString());
-        }
-
-        stage.close();
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Importing register...");
+            saveController.selectedDirectory.addChild(root);
+            loadDirectory(path, root);
+    
+            if (deleteFile.isSelected()) {
+                if (root.getType().equals(Register.DIRECTORY))
+                    FileUtils.deleteDirectory(path.toString());
+                else 
+                    FileUtils.deleteFile(path.toString());
+            }
+            action.endNow(endingAction -> {getScene().getStage().close();});
+        });
     }
 
     public void browsePressed(MouseEvent event) {
@@ -130,7 +126,7 @@ public class ImportRegisterController extends AppController {
     }
     
     public void cancelPressed(MouseEvent event) {
-        stage.close();
+        getScene().getStage().close();
     }
 
     private void loadDirectory(Path path, SaveTreeItem root) {
@@ -144,7 +140,7 @@ public class ImportRegisterController extends AppController {
             try {
                 Stream<Path> list = Files.list(path);
                 list.forEach(e -> {
-                    SaveTreeItem child = new SaveTreeItem(save);
+                    SaveTreeItem child = new SaveTreeItem(saveScene.getSave());
                     root.addChild(child);
                     loadDirectory(e, child);
                 });
@@ -160,7 +156,7 @@ public class ImportRegisterController extends AppController {
 
             Register register = new Register(root.calculatePath());
             register.readFromFile(path.toString());
-            save.saveRegister(register);
+            saveScene.getSave().saveRegister(register);
         }
     }
 }

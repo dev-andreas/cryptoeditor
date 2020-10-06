@@ -6,7 +6,6 @@ import java.security.KeyPair;
 import com.andreas.main.app.AppController;
 import com.andreas.main.cryptography.RSA;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,11 +31,9 @@ public class CreateKeyController extends AppController {
 
     @Override
     public void init() {
-        // Shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
-                createPressed(null);
-            });
+        // Shortcuts      
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
+            createPressed(null);
         });
     }
 
@@ -58,16 +55,18 @@ public class CreateKeyController extends AppController {
             return;
         }
     
-        KeyPair kp = RSA.gen(2048);
-        if (!RSA.writeKeyPair(kp, keyPath.getText() + "/" + keyName.getText() + ".xml")) {
-            notifiation.setText("Key couldn't be created.");
-            return;
-        }
-
-        stage.close();
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Creating new key...");
+            KeyPair kp = RSA.gen(2048);
+            if (!RSA.writeKeyPair(kp, keyPath.getText() + "/" + keyName.getText() + ".xml")) {
+                action.endNow(endingAction -> {notifiation.setText("Key couldn't be created.");});
+            } else {
+                action.endNow(endingAction -> {getScene().getStage().close();});
+            }
+        });
     }
 
     public void cancelPressed(MouseEvent event) {
-        stage.close();
+        getScene().getStage().close();
     }
 }

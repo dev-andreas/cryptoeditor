@@ -1,4 +1,4 @@
-package com.andreas.main.stages.saveStage;
+package com.andreas.main.stages.mainStage.scenes.saveScene;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import com.andreas.main.FileUtils;
-import com.andreas.main.app.AppStage;
+import com.andreas.main.app.AppScene;
 import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
 import com.andreas.main.save.SaveTreeItem;
@@ -16,22 +16,15 @@ import com.andreas.main.stages.StageUtils;
 
 import javafx.application.Application;
 
-public class SaveStage extends AppStage {
+public class SaveScene extends AppScene {
 
     private Save save;
 
-    public SaveStage(Application app, Save save) {
-        super(app, "stages/saveStage/save.fxml");
+    public SaveScene(Application app, Save save) {
+        super(app, "stages/mainStage/scenes/saveScene/save.fxml", "cryptoeditor | " + save.getName());
+        
         this.save = save;
-
-        setTitle(save.getName());
-
         loadRegisters();
-        init();
-    }
-
-    public Save getSave() {
-        return save;
     }
 
     public void addRegister(String name, String type) {
@@ -133,5 +126,9 @@ public class SaveStage extends AppStage {
                 e.printStackTrace();
             }
         }
+    }
+
+    public Save getSave() {
+        return save;
     }
 }

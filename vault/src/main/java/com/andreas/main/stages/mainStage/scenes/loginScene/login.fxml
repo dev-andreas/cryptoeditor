@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane stylesheets="@../../../../../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.loginStage.LoginController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.mainStage.scenes.loginScene.LoginController">
    <left>
       <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -56,7 +56,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="CRYPTOEDITOR V1.2">
+                        <Label text="CRYPTOEDITOR V1.3">
                            <HBox.margin>
                               <Insets right="40.0" top="20.0" />
                            </HBox.margin>

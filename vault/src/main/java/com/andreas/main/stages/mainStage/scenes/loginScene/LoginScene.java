@@ -1,4 +1,4 @@
-package com.andreas.main.stages.loginStage;
+package com.andreas.main.stages.mainStage.scenes.loginScene;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,20 +7,16 @@ import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import com.andreas.main.FileUtils;
-import com.andreas.main.app.AppStage;
+import com.andreas.main.app.AppScene;
 import com.andreas.main.save.Save;
 import com.andreas.main.stages.StageUtils;
 
 import javafx.application.Application;
 
-public class LoginStage extends AppStage {
+public class LoginScene extends AppScene {
 
-    public LoginStage(Application app) {
-        super(app, "stages/loginStage/login.fxml");
-        setTitle("Login");
-
-        init();
-
+    public LoginScene(Application app) {
+        super(app, "stages/mainStage/scenes/loginScene/login.fxml", "cryptoeditor");
         loadSaves();
     }
 

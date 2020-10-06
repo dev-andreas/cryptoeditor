@@ -9,9 +9,8 @@ import com.andreas.main.FileUtils;
 import com.andreas.main.app.AppController;
 import com.andreas.main.cryptography.SHA;
 import com.andreas.main.save.Register;
-import com.andreas.main.save.Save;
 import com.andreas.main.stages.StageUtils;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import org.jdom2.Element;
 
@@ -36,17 +35,15 @@ public class LoadBackupController extends AppController {
     @FXML
     public PasswordField password;
 
-    private SaveStage saveStage;
-    private Save save;
+    private SaveScene saveScene;
 
     @Override 
     public void init() {
-        saveStage = ((LoadBackupStage)stage).getSaveStage();
-        save = saveStage.getSave();
+        saveScene = ((LoadBackupStage) getScene().getStage()).getSaveScene();
     }
 
     public void browsePressed() {
-        File recordsDir = new File(StageUtils.SAVES_PATH + save.getName() + "/backups");
+        File recordsDir = new File(StageUtils.SAVES_PATH + saveScene.getSave().getName() + "/backups");
         if (! recordsDir.exists()) {
             recordsDir.mkdirs();
         }
@@ -59,7 +56,7 @@ public class LoadBackupController extends AppController {
     }
 
     public void loadPressed() {
-        if (!SHA.verify(password.getText(), save.getPasswordSalt(), save.getPasswordHash())) {
+        if (!SHA.verify(password.getText(), saveScene.getSave().getPasswordSalt(), saveScene.getSave().getPasswordHash())) {
             StageUtils.pushNotification("Password is incorrect!");
             return;
         }
@@ -74,21 +71,24 @@ public class LoadBackupController extends AppController {
         alert.showAndWait();
 
         if (alert.getResult() == loadBackup) {
-            save.read(filePath.getText());
-            loadBackupRegisters();
-            save.open(save.getKeyPath(), password.getText());
-            save.write();
-            saveStage.loadRegisters();
-            stage.close();
+            getScene().getStage().applyLoadingScene(action -> {
+                action.setText("Loading backup...");
+                saveScene.getSave().read(filePath.getText());
+                loadBackupRegisters();
+                saveScene.getSave().open(saveScene.getSave().getKeyPath(), password.getText());
+                saveScene.getSave().write();
+                saveScene.loadRegisters();
+                getScene().getStage().close();
+            });
         }
 
         if (alert.getResult() == cancel) {
-            stage.close();
+            getScene().getStage().close();
         }
     }
 
     public void cancelPressed() {
-        stage.close();
+        getScene().getStage().close();
     }
 
     public void loadBackupRegisters() {
@@ -98,7 +98,7 @@ public class LoadBackupController extends AppController {
         // registers
         Element registers = root.getChild("registers");
 
-        FileUtils.forEachFile(StageUtils.SAVES_PATH + save.getName() + "/registers", path -> {
+        FileUtils.forEachFile(StageUtils.SAVES_PATH + saveScene.getSave().getName() + "/registers", path -> {
             FileUtils.deleteDirectory(path.toString());
         });
 
@@ -121,8 +121,8 @@ public class LoadBackupController extends AppController {
                 file.setFileTypeCipher(FileUtils.hexToBytes(register.getChildText("fileTypeCipher")));
                 file.setContentCipher(FileUtils.hexToBytes(register.getChildText("contentCipher")));
 
-                save.openRegister(file);
-                save.saveRegister(file);
+                saveScene.getSave().openRegister(file);
+                saveScene.getSave().saveRegister(file);
                 file.close();
             }
         }

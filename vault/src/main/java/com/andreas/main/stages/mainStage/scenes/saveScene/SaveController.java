@@ -1,4 +1,4 @@
-package com.andreas.main.stages.saveStage;
+package com.andreas.main.stages.mainStage.scenes.saveScene;
 
 import com.andreas.main.app.AppController;
 import com.andreas.main.app.RegisterTab;
@@ -9,11 +9,10 @@ import com.andreas.main.stages.createBackupStage.CreateBackupStage;
 import com.andreas.main.stages.exportRegisterStage.ExportRegisterStage;
 import com.andreas.main.stages.importRegisterStage.ImportRegisterStage;
 import com.andreas.main.stages.loadBackupStage.LoadBackupStage;
-import com.andreas.main.stages.loginStage.LoginStage;
+import com.andreas.main.stages.mainStage.scenes.loginScene.LoginScene;
 import com.andreas.main.stages.newRegisterStage.NewRegisterStage;
 import com.andreas.main.stages.renameRegisterStage.RenameRegisterStage;
 
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -62,59 +61,41 @@ public class SaveController extends AppController {
     @Override
     public void init() {
 
-        // shortcuts
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), () -> {
-                saveCurrentTab();
-            });
+        // shortcuts       
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN), () -> {
+            saveCurrentTab();
+        });
+      
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
+            addRegister();
+        });
+      
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN), () -> {
+            renameRegister();
+        });
+    
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
+            deleteRegister();
+        });
+    
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.B, KeyCombination.SHORTCUT_DOWN), () -> {
+            createBackup();
+        });
+    
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), () -> {
+            loadBackup();
         });
 
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.C, KeyCombination.SHORTCUT_DOWN), () -> {
-                addRegister();
-            });
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.I, KeyCombination.SHORTCUT_DOWN), () -> {
+            importRegister();
         });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.R, KeyCombination.SHORTCUT_DOWN), () -> {
-                renameRegister();
-            });
+    
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN), () -> {
+            exportRegister();
         });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
-                deleteRegister();
-            });
-        });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.B, KeyCombination.SHORTCUT_DOWN), () -> {
-                createBackup();
-            });
-        });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.SHORTCUT_DOWN), () -> {
-                loadBackup();
-            });
-        });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.I, KeyCombination.SHORTCUT_DOWN), () -> {
-                importRegister();
-            });
-        });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN), () -> {
-                exportRegister();
-            });
-        });
-
-        Platform.runLater(() -> {        
-            stage.getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> {
-                lockSavePressed();
-            });
+    
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ESCAPE), () -> {
+            lockSavePressed();
         });
 
 
@@ -176,10 +157,8 @@ public class SaveController extends AppController {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
-            LoginStage stage = new LoginStage(this.stage.getApp());
-            stage.show();
-            this.stage.close();
-            ((SaveStage)this.stage).getSave().close();
+            getScene().getStage().setScene(new LoginScene(getScene().getStage().getApp()));
+            ((SaveScene) getScene()).getSave().close();
         }
 
         if (alert.getResult() == ButtonType.CANCEL) {
@@ -189,7 +168,7 @@ public class SaveController extends AppController {
 
     @FXML
     public void addRegister() {
-        NewRegisterStage stage = new NewRegisterStage(this.stage.getApp(), (SaveStage) this.stage);
+        NewRegisterStage stage = new NewRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
@@ -201,7 +180,7 @@ public class SaveController extends AppController {
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
-            ((SaveStage)stage).removeRegister();
+            ((SaveScene) getScene()).removeRegister();
         }
 
         if (alert.getResult() == ButtonType.CANCEL) {
@@ -211,38 +190,38 @@ public class SaveController extends AppController {
 
     @FXML
     public void renameRegister() {
-        Stage stage = new RenameRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        Stage stage = new RenameRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
     public void importRegister() {
-        Stage stage = new ImportRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        Stage stage = new ImportRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
     public void exportRegister() {
-        Stage stage = new ExportRegisterStage(this.stage.getApp(), (SaveStage)this.stage);
+        Stage stage = new ExportRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
     public void createBackup() {
-        Stage stage = new CreateBackupStage(this.stage.getApp(), (SaveStage)this.stage);
+        Stage stage = new CreateBackupStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
     public void loadBackup() {
-        Stage stage = new LoadBackupStage(this.stage.getApp(), (SaveStage)this.stage);
+        Stage stage = new LoadBackupStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     public void saveCurrentTab() {
         if (tabs.getSelectionModel().getSelectedIndex() < 0 || savedState.getText().equals(""))
             return;
-        Save save = ((SaveStage)stage).getSave();
+        Save save = ((SaveScene) getScene()).getSave();
         ((RegisterTab)tabs.getSelectionModel().getSelectedItem()).save(save);
 
         savedState.setText("");
@@ -251,13 +230,20 @@ public class SaveController extends AppController {
     public void openTab() {
         if (selectedItem.getType().equals(Register.DIRECTORY))
             return;
+            
+        getScene().getStage().applyLoadingScene(action -> {
+            action.setText("Opening...");
+            Register register = new Register(selectedItem.calculatePath());;
+            register.read();
+            ((SaveScene) getScene()).getSave().openRegister(register);
 
-        Register register = new Register(selectedItem.calculatePath());
-        register.read();
-        ((SaveStage)stage).getSave().openRegister(register);
-        RegisterTab tab = RegisterTab.getCorrectTab((SaveStage)stage, register);
-        tabs.getTabs().add(tab);
-        tabs.getSelectionModel().select(tab);
+            RegisterTab tab = RegisterTab.getCorrectTab((SaveScene)getScene(), register);
+            
+            action.endNow(endingAction -> {
+                tabs.getTabs().add(tab);
+                tabs.getSelectionModel().select(tab);
+            });
+        });
     }
 
     public boolean nameExists(String name) {

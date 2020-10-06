@@ -3,7 +3,7 @@ package com.andreas.main.app;
 import java.nio.charset.StandardCharsets;
 
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,8 +13,8 @@ public class TextTab extends RegisterTab {
 
     private TextArea textArea;
 
-    public TextTab(SaveStage saveStage, Register register) {
-        super(saveStage, register, true);
+    public TextTab(SaveScene saveScene, Register register) {
+        super(saveScene, register, true);
 
         textArea = new TextArea();
         textArea.setText(new String(register.getContent(), StandardCharsets.UTF_8));

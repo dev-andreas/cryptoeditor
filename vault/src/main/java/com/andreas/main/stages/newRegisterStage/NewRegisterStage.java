@@ -1,27 +1,26 @@
 package com.andreas.main.stages.newRegisterStage;
 
+import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppStage;
-import com.andreas.main.stages.saveStage.SaveStage;
+import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.application.Application;
 import javafx.stage.Modality;
 
 public class NewRegisterStage extends AppStage {
 
-    private SaveStage saveStage;
+    private SaveScene saveScene;
 
-    public NewRegisterStage(Application app, SaveStage saveStage) {
-        super(app, "stages/newRegisterStage/newRegister.fxml");
-        setTitle("New register");
+    public NewRegisterStage(Application app, SaveScene saveScene) {
+        super(app);
         setResizable(false);
         initModality(Modality.APPLICATION_MODAL);
 
-        this.saveStage = saveStage;
-        
-        init();
+        this.saveScene = saveScene;
+        setScene(new AppScene(app, "stages/newRegisterStage/newRegister.fxml", "New register"));
     }
     
-    public SaveStage getSaveStage() {
-        return saveStage;
+    public SaveScene getSaveScene() {
+        return saveScene;
     } 
 }

@@ -1,27 +1,26 @@
 package com.andreas.main.stages.renameSaveStage;
 
+import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppStage;
-import com.andreas.main.stages.loginStage.LoginStage;
+import com.andreas.main.stages.mainStage.scenes.loginScene.LoginScene;
 
 import javafx.application.Application;
 import javafx.stage.Modality;
 
 public class RenameSaveStage extends AppStage {
 
-    private LoginStage loginStage;
+    private LoginScene loginScene;
 
-    public RenameSaveStage(Application app, LoginStage loginStage) {
-        super(app, "stages/renameSaveStage/renameSave.fxml");
-        setTitle("Rename Save");
+    public RenameSaveStage(Application app, LoginScene loginScene) {
+        super(app);
         setResizable(false);
         initModality(Modality.APPLICATION_MODAL);
 
-        this.loginStage = loginStage;
-
-        init();
+        this.loginScene = loginScene;
+        setScene(new AppScene(app, "stages/renameSaveStage/renameSave.fxml", "Rename save"));
     }
     
-    public LoginStage getLoginStage() {
-        return loginStage;
+    public LoginScene getLoginScene() {
+        return loginScene;
     }
 }

@@ -65,7 +65,7 @@
          <children>
             <TextField fx:id="filePath">
                <HBox.margin>
-                  <Insets bottom="20.0" left="20.0" />
+                  <Insets bottom="20.0" left="20.0" right="10.0" />
                </HBox.margin>
             </TextField>
             <Button mnemonicParsing="false" onMouseClicked="#browsePressed" styleClass="secondary-button" text="Browse">
