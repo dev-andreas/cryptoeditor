@@ -10,5 +10,11 @@
 - Bug fixes
 
 ## V1.3
-- Image display (PNG, JPEG, GIF, BMP)
+- Image support (PNG, JPEG, GIF, BMP)
 - Updated stylesheet
+
+## V1.4
+- HTML editor added
+- Themes added dark / light. You can also create custom themes with css.
+- Faster encryption. You can now encrypt large files.
+- Updated backup mechanism
