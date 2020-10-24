@@ -56,7 +56,7 @@
                <children>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="CRYPTOEDITOR V1.3">
+                        <Label text="CRYPTOEDITOR V1.4">
                            <HBox.margin>
                               <Insets right="40.0" top="20.0" />
                            </HBox.margin>
@@ -143,7 +143,7 @@
           <Menu mnemonicParsing="false" text="Settings">
             <items>
                   <MenuItem mnemonicParsing="false" text="Languages..." />
-                  <MenuItem mnemonicParsing="false" text="Themes..." />
+                  <MenuItem mnemonicParsing="false" onAction="#selectTheme" text="Themes..." />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

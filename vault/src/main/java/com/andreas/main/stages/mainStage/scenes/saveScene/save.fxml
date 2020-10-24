@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.mainStage.scenes.saveScene.SaveController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.mainStage.scenes.saveScene.SaveController">
    <left>
       <VBox fx:id="registersBox" prefHeight="400.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -128,7 +128,7 @@
           <Menu mnemonicParsing="false" text="Settings">
             <items>
                   <MenuItem mnemonicParsing="false" text="Languages..." />
-                  <MenuItem mnemonicParsing="false" text="Themes..." />
+                  <MenuItem mnemonicParsing="false" onAction="#selectTheme" text="Themes..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem mnemonicParsing="false" text="Delete Save" />
             </items>

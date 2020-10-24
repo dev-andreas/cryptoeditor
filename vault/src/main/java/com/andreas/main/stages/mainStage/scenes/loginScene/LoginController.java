@@ -26,6 +26,7 @@ import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 import com.andreas.main.stages.newSaveStage.NewSaveStage;
 import com.andreas.main.stages.removeSaveStage.RemoveSaveStage;
 import com.andreas.main.stages.renameSaveStage.RenameSaveStage;
+import com.andreas.main.stages.themeSelectorStage.ThemeSelectorStage;
 
 import org.jdom2.Element;
 
@@ -79,7 +80,8 @@ public class LoginController extends AppController {
         keyPath.setText(readKeyPath());
     }
 
-    public void openPressed(MouseEvent event) {
+    @FXML
+    private void openPressed(MouseEvent event) {
 
         getScene().getStage().applyLoadingScene(action -> {
 
@@ -137,7 +139,8 @@ public class LoginController extends AppController {
         });
     }
 
-    public void savePressed(MouseEvent event) {
+    @FXML
+    private void savePressed(MouseEvent event) {
         index = savesList.getSelectionModel().getSelectedIndex();
         if (index < 0)
             return;
@@ -146,7 +149,8 @@ public class LoginController extends AppController {
         setEditable();
     }
 
-    public void browsePressed(MouseEvent event) {
+    @FXML
+    private void browsePressed(MouseEvent event) {
         FileChooser fc = new FileChooser();
         File file = fc.showOpenDialog(null);
 
@@ -162,9 +166,34 @@ public class LoginController extends AppController {
         }
     }
 
-    public void addKeyPressed(MouseEvent event) {
+    @FXML
+    private void addKeyPressed(MouseEvent event) {
         CreateKeyStage stage = new CreateKeyStage(getScene().getStage().getApp());
-        stage.show();
+        stage.start();
+    }
+
+    @FXML
+    private void addSave() {
+        NewSaveStage stage = new NewSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
+        stage.start();
+    }
+
+    @FXML
+    private void deleteSave() {
+        RemoveSaveStage stage = new RemoveSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
+        stage.start();
+    }
+
+    @FXML
+    private void renameSave() {
+        RenameSaveStage stage = new RenameSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
+        stage.start();
+    }
+
+    @FXML
+    private void selectTheme() {
+        ThemeSelectorStage stage = new ThemeSelectorStage(getScene().getStage().getApp());
+        stage.start();
     }
 
     public boolean passwordMatches(Save save, String password) {
@@ -172,21 +201,6 @@ public class LoginController extends AppController {
         if (SHA.verify(password, save.getPasswordSalt(), save.getPasswordHash()))
             return true;
         return false;
-    }
-
-    public void addSave() {
-        NewSaveStage stage = new NewSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
-        stage.show();
-    }
-
-    public void deleteSave() {
-        RemoveSaveStage stage = new RemoveSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
-        stage.show();
-    }
-
-    public void renameSave() {
-        RenameSaveStage stage = new RenameSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
-        stage.show();
     }
 
     public void setEditable() {

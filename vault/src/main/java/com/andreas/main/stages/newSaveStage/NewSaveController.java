@@ -59,7 +59,7 @@ public class NewSaveController extends AppController {
     }
 
     public void cancelPressed(MouseEvent mouseEvent) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 
     public void createPressed(MouseEvent mouseEvent) {
@@ -89,7 +89,7 @@ public class NewSaveController extends AppController {
                     
                     loginScene.addSave(save);
                     action.endNow(endingAction -> {
-                        getScene().getStage().close();
+                        getScene().getStage().stop();
                     });
                 });
             } else {

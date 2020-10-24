@@ -1,6 +1,7 @@
 package com.andreas.main.app;
 
 import com.andreas.main.FileUtils;
+import com.andreas.main.app.htmlTab.HtmlTab;
 import com.andreas.main.app.imageTab.ImageTab;
 import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
@@ -20,8 +21,18 @@ public abstract class RegisterTab extends Tab {
                 if (Register.ACCEPTED_IMAGE_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
                     return new ImageTab(saveScene, register);
             }
+            /*
+            for (int i = 0; i < Register.ACCEPTED_MEDIA_FILE_TYPES.length; i++) {
+                if (Register.ACCEPTED_MEDIA_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
+                    return new MediaTab(saveScene, register);
+            }
+            */
             return new BinaryTab(saveScene, register);
         } else {
+            for (int i = 0; i < Register.ACCEPTED_HTML_FILE_TYPES.length; i++) {
+                if (Register.ACCEPTED_HTML_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
+                    return new HtmlTab(saveScene, register);
+            }
             return new TextTab(saveScene, register);
         }
     }

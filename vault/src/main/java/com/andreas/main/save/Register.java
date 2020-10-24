@@ -14,8 +14,10 @@ import org.jdom2.Element;
 
 public class Register {
 
-    public static final String DEFAULT_FILE_TYPE = ".txt", DIRECTORY = ".directory";
+    public static final String DEFAULT_FILE_TYPE = ".txt", DIRECTORY = ".directory", HTML = ".html";
     public static final String[] INTERN_FILE_TYPES = new String[] {
+        DEFAULT_FILE_TYPE,
+        HTML,
         DIRECTORY,
     };
 
@@ -25,6 +27,26 @@ public class Register {
         ".jpeg",
         ".bmp",
     };
+
+    public static final String[] ACCEPTED_MEDIA_FILE_TYPES = new String[] {
+        ".aif",
+        ".aiff",
+        ".fxm",
+        ".flv",
+        ".m3u8",
+        ".mp3",
+        ".mp4", 
+        ".m4a", 
+        ".m4v",
+        ".wav",
+    };
+
+    public static final String[] ACCEPTED_HTML_FILE_TYPES = new String[] {
+        ".html",
+        ".htm",
+    };
+
+    public static final String PROPERTIES_SUFFIX = ".prp", CONTENT_SUFFIX = ".cnt";
 
     // CLASS
 
@@ -91,18 +113,15 @@ public class Register {
         fileTypeCipher.setText(FileUtils.bytesToHex(this.fileTypeCipher));
         root.addContent(fileTypeCipher);
 
-        Element contentCipher = new Element("contentCipher");
-        contentCipher.setText(FileUtils.bytesToHex(this.contentCipher));
-        root.addContent(contentCipher);
-
-        FileUtils.createXmlFile(path, root);
+        FileUtils.createXmlFile(path + PROPERTIES_SUFFIX, root);
+        FileUtils.createBinaryFile(path + CONTENT_SUFFIX, contentCipher);
     }
 
     /**
      * This method reads the register file and initializes the cipher data.
      */
     public void read() {
-        Element root = FileUtils.readXmlFile(path);
+        Element root = FileUtils.readXmlFile(path + PROPERTIES_SUFFIX);
 
         String iv = root.getChildText("iv");
         this.iv = FileUtils.hexToBytes(iv);
@@ -113,8 +132,7 @@ public class Register {
         String fileTypeCipher = root.getChildText("fileTypeCipher");
         this.fileTypeCipher = FileUtils.hexToBytes(fileTypeCipher);
 
-        String contentCipher = root.getChildText("contentCipher");
-        this.contentCipher = FileUtils.hexToBytes(contentCipher);
+        this.contentCipher = FileUtils.readBinaryFile(path + CONTENT_SUFFIX);
     }
 
     /**
@@ -127,7 +145,7 @@ public class Register {
         if (Files.isDirectory(path))
             return;
         
-        String[] nameAndType = FileUtils.splitFileNameAndType(path.getFileName().toString());
+        String[] nameAndType = FileUtils.splitPrefixAndSuffix(path.getFileName().toString());
         setName(nameAndType[0]);
         setFileType(nameAndType[1]);
         setContent(FileUtils.readBinaryFile(path.toAbsolutePath().toString()));

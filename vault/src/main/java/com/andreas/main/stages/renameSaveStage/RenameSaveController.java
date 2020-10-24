@@ -65,12 +65,12 @@ public class RenameSaveController extends AppController {
             action.setText("Renaming save...");
             loginScene.renameSave(save, index, newName.getText());
             action.endNow(endingAction -> {
-                getScene().getStage().close();
+                getScene().getStage().stop();
             });
         });
     }
 
     public void cancelPressed(MouseEvent event) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 }

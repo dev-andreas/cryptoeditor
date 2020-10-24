@@ -59,12 +59,12 @@ public class ExportRegisterController extends AppController {
         getScene().getStage().applyLoadingScene(action -> {
             action.setText("Exporting register...");
             exportRegister(saveController.selectedItem, filePath.getText());
-            action.endNow(endingAction -> {getScene().getStage().close();});
+            action.endNow(endingAction -> {getScene().getStage().stop();});
         });
     }
 
     public void cancelPressed(MouseEvent event) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 
     public void browsePressed(MouseEvent event) {

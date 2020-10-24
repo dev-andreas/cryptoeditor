@@ -50,11 +50,11 @@ public class RemoveSaveController extends AppController{
             }
     
             loginScene.removeSave(save, loginController.savesList.getSelectionModel().getSelectedIndex());
-            action.endNow(endingAction -> {getScene().getStage().close();});
+            action.endNow(endingAction -> {getScene().getStage().stop();});
         });
     }
 
     public void cancelPressed(MouseEvent event) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 }

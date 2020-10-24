@@ -89,7 +89,7 @@ public class ImportRegisterController extends AppController {
                 else 
                     FileUtils.deleteFile(path.toString());
             }
-            action.endNow(endingAction -> {getScene().getStage().close();});
+            action.endNow(endingAction -> { getScene().getStage().stop(); });
         });
     }
 
@@ -107,7 +107,7 @@ public class ImportRegisterController extends AppController {
             FileChooser fc = new FileChooser();
             File file = fc.showOpenDialog(null);
             filePath.setText(file.getAbsolutePath());
-            String[] fileName = FileUtils.splitFileNameAndType(file.getName());
+            String[] fileName = FileUtils.splitPrefixAndSuffix(file.getName());
             name.setText(fileName[0]);
             type.setText(fileName[1]);
         }
@@ -126,7 +126,7 @@ public class ImportRegisterController extends AppController {
     }
     
     public void cancelPressed(MouseEvent event) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 
     private void loadDirectory(Path path, SaveTreeItem root) {
@@ -150,7 +150,7 @@ public class ImportRegisterController extends AppController {
                 e.printStackTrace();
             }
         } else {
-            String[] nameAndType = FileUtils.splitFileNameAndType(path.getFileName().toString());
+            String[] nameAndType = FileUtils.splitPrefixAndSuffix(path.getFileName().toString());
             root.setName(nameAndType[0]);
             root.setType(nameAndType[1]);
 

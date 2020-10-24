@@ -39,4 +39,16 @@ public class StageUtils {
         clipboard.setContent(content);
 
     }
+
+    public static String secondsToNiceLayout(long seconds) {
+
+        byte niceHours = (byte) (seconds / 3600);
+        byte niceMinutes = (byte) (seconds/60 % 60);
+        byte niceSeconds = (byte) (seconds % 60);
+
+        String niceLayout = (niceHours == 0 ? "" : String.format("%02d", niceHours) + ":") + 
+                            String.format("%02d", niceMinutes) + ":" + String.format("%02d", niceSeconds);
+
+        return niceLayout;
+    }
 }

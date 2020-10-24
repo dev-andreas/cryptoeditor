@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="380.0" stylesheets="@../../../../../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.loadBackupStage.LoadBackupController">
+<BorderPane prefHeight="240.0" prefWidth="380.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.stages.loadBackupStage.LoadBackupController">
    <top>
       <Label text="Load backup" BorderPane.alignment="TOP_LEFT">
          <BorderPane.margin>

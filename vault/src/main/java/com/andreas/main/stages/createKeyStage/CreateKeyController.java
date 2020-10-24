@@ -61,12 +61,12 @@ public class CreateKeyController extends AppController {
             if (!RSA.writeKeyPair(kp, keyPath.getText() + "/" + keyName.getText() + ".xml")) {
                 action.endNow(endingAction -> {notifiation.setText("Key couldn't be created.");});
             } else {
-                action.endNow(endingAction -> {getScene().getStage().close();});
+                action.endNow(endingAction -> {getScene().getStage().stop();});
             }
         });
     }
 
     public void cancelPressed(MouseEvent event) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 }

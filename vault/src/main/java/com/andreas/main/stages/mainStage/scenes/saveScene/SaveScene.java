@@ -97,7 +97,6 @@ public class SaveScene extends AppScene {
         save.getRoot().setName("registers");
         save.getRoot().setType(Register.DIRECTORY);
         ((SaveController)getController()).registers.setRoot(getSave().getRoot());
-
         Path path = Paths.get(StageUtils.SAVES_PATH + getSave().getName() + "/registers");
         loadDirectory(path, getSave().getRoot());
     }
@@ -107,11 +106,16 @@ public class SaveScene extends AppScene {
             try {
                 Stream<Path> list = Files.list(path);
                 list.forEach(e -> {
+                    String[] nameAndType = FileUtils.splitPrefixAndSuffix(e.getFileName().toString());
+                    if (nameAndType[1].equals(Register.CONTENT_SUFFIX))
+                        return;
+
                     SaveTreeItem child = new SaveTreeItem(getSave());
 
-                    byte[] cipher = FileUtils.hexToBytes(e.getFileName().toString());
+                    byte[] cipher = FileUtils.hexToBytes(nameAndType[0]);
                     String name = new String(getSave().decrypt(cipher), StandardCharsets.UTF_8);
-                    String[] nameAndType = FileUtils.splitFileNameAndType(name);
+                    
+                    nameAndType = FileUtils.splitPrefixAndSuffix(name);
 
                     child.setName(nameAndType[0]);
                     child.setType(nameAndType[1]);

@@ -30,6 +30,10 @@ public class SaveTreeItem extends TreeItem<String> {
         setExpanded(true);
     }
 
+    /**
+     * Loads 
+     * @param key
+     */
     public void load(SecretKey key) {
 
         updateValue();
@@ -123,7 +127,7 @@ public class SaveTreeItem extends TreeItem<String> {
         SaveTreeItem parent = (SaveTreeItem)getParent();
 
         byte[] cipher = save.encrypt((getName() + getType()).getBytes(StandardCharsets.UTF_8));
-        paths.add(FileUtils.bytesToHex(cipher) + "/");
+        paths.add(FileUtils.bytesToHex(cipher));
         while (parent.getParent() != null) {
             byte[] parentCipher = save.encrypt((parent.getName() + parent.getType()).getBytes(StandardCharsets.UTF_8));
             paths.add(FileUtils.bytesToHex(parentCipher) + "/");

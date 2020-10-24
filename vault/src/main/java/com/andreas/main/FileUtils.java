@@ -2,6 +2,7 @@ package com.andreas.main;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,6 +24,10 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
 
 /**
  * @author Andreas Gerasimow.
@@ -273,7 +278,7 @@ public class FileUtils {
      * This method renames a specific path or directory.
      * @param oldPath Path to rename.
      * @param newPath New name.
-     * @return Returns <code>true</code> if moving was successfull.
+     * @return Returns <code>true</code> if renaming was successfull.
      */
     public static boolean renamePath(String path, String newName) {
         Path oldPath = Paths.get(path); 
@@ -318,18 +323,18 @@ public class FileUtils {
 
 
     /**
-     * This method splits the file term to file name and file type a two different strings.
-     * @param fileName The file term to spilt.
-     * @return Returns a <code>String[]</code> in which index 0 is the file name and index 1 is the file type.
+     * This method splits the full name of a file in prefix and suffix.
+     * @param fullName The full name to split.
+     * @return Returns a <code>String[]</code> with index 0 as prefix and index 1 as suffix.
      */
-    public static String[] splitFileNameAndType(String fileTerm) {
-        String[] nameSplits = fileTerm.split("\\.");
+    public static String[] splitPrefixAndSuffix(String fullName) {
+        String[] nameSplits = fullName.split("\\.");
         String fileName = nameSplits[0];
         for (int i = 1; i < nameSplits.length-1; i++)
             fileName += "."+nameSplits[i];
         
         String name = fileName;
-        String type = "."+nameSplits[nameSplits.length - 1].toLowerCase();
+        String type = "." + nameSplits[nameSplits.length - 1].toLowerCase();
   
         return new String[] { name, type };
     }
@@ -353,5 +358,70 @@ public class FileUtils {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+    }
+
+    /**
+     * This method creates a .zip file.
+     * @param targetPath The files which should be compressed.
+     * @param destinationFilePath The path where the .zip file should be created.
+     * @param password The password for AES256 encryption. Leave empty if no encryption should be used.
+     */
+    public static void zip(String targetPath, String destinationFilePath, String password) {
+        try {
+            ZipParameters parameters = new ZipParameters();
+            parameters.setCompressionMethod(Zip4jConstants.COMP_DEFLATE);
+            parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+
+            if (!password.isEmpty()) {
+                parameters.setEncryptFiles(true);
+                parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_AES);
+                parameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256);
+                parameters.setPassword(password);
+            }
+
+            ZipFile zipFile = new ZipFile(destinationFilePath);
+
+            File targetFile = new File(targetPath);
+            if (targetFile.isFile()) {
+                zipFile.addFile(targetFile, parameters);
+            } else if (targetFile.isDirectory()) {
+                zipFile.addFolder(targetFile, parameters);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method unzips a .zip file.
+     * @param targetZipFilePath The .zip file to unzip.
+     * @param destinationFolderPath The folder where the .zip file should be unzipped.
+     * @param password The password used to encrypt the .zip file. Leave empty if no password was used.
+     */
+    public static void unzip(String targetZipFilePath, String destinationFolderPath, String password) {
+        try {
+            ZipFile zipFile = new ZipFile(targetZipFilePath);
+            if (zipFile.isEncrypted()) {
+                zipFile.setPassword(password);
+            }
+            zipFile.extractAll(destinationFolderPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method copies a file from one directory to another.
+     * @param target The file path to copy.
+     * @param newDir The file path for the copied file.
+     * @return Returns <code>true</code> if copy was successfull.
+     */
+    public static boolean copyFile(String target, String newDir) {
+        Path targetPath = Paths.get(target);
+        Path newDirPath = Paths.get(newDir);
+        byte[] bytes = readBinaryFile(target);
+        return createBinaryFile(newDirPath.toString() + "/" + targetPath.getFileName().toString(), bytes);
     }
 }

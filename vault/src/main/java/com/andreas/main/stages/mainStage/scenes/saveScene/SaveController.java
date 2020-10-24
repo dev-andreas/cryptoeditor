@@ -12,6 +12,7 @@ import com.andreas.main.stages.loadBackupStage.LoadBackupStage;
 import com.andreas.main.stages.mainStage.scenes.loginScene.LoginScene;
 import com.andreas.main.stages.newRegisterStage.NewRegisterStage;
 import com.andreas.main.stages.renameRegisterStage.RenameRegisterStage;
+import com.andreas.main.stages.themeSelectorStage.ThemeSelectorStage;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -150,7 +151,7 @@ public class SaveController extends AppController {
     }
 
     @FXML
-    public void lockSavePressed() {
+    private void lockSavePressed() {
         Alert alert = new Alert(AlertType.CONFIRMATION, "Save gets closed. Are you sure you want to leave?\nAttention: Don't forget to save!",
                 ButtonType.CANCEL, ButtonType.YES);
         alert.initModality(Modality.WINDOW_MODAL);
@@ -167,13 +168,13 @@ public class SaveController extends AppController {
     }
 
     @FXML
-    public void addRegister() {
+    private void addRegister() {
         NewRegisterStage stage = new NewRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
-        stage.show();
+        stage.start();
     }
 
     @FXML
-    public void deleteRegister() {
+    private void deleteRegister() {
         Alert alert = new Alert(AlertType.CONFIRMATION, "Delete \"" + selectedItem.getName() + "\"?", 
             ButtonType.CANCEL, ButtonType.YES);
         alert.initModality(Modality.WINDOW_MODAL);
@@ -189,33 +190,39 @@ public class SaveController extends AppController {
     }
 
     @FXML
-    public void renameRegister() {
+    private void renameRegister() {
         Stage stage = new RenameRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
-    public void importRegister() {
+    private void importRegister() {
         Stage stage = new ImportRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
-    public void exportRegister() {
+    private void exportRegister() {
         Stage stage = new ExportRegisterStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
-    public void createBackup() {
+    private void createBackup() {
         Stage stage = new CreateBackupStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
     }
 
     @FXML
-    public void loadBackup() {
+    private void loadBackup() {
         Stage stage = new LoadBackupStage(getScene().getStage().getApp(), (SaveScene) getScene());
         stage.show();
+    }
+
+    @FXML
+    private void selectTheme() {
+        ThemeSelectorStage stage = new ThemeSelectorStage(getScene().getStage().getApp());
+        stage.start();
     }
 
     public void saveCurrentTab() {

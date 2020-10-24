@@ -1,10 +1,15 @@
 package com.andreas.main.app;
 
+import java.nio.file.Paths;
 import java.util.ConcurrentModificationException;
 import java.util.Stack;
 import java.util.function.Consumer;
 
+import com.andreas.main.App;
+import com.andreas.main.FileUtils;
 import com.andreas.main.scenes.loadingScene.LoadingScene;
+
+import org.jdom2.Element;
 
 import javafx.application.Application;
 import javafx.collections.ObservableMap;
@@ -40,7 +45,10 @@ public abstract class AppStage extends Stage {
         accelerators = new Stack<>();
 
         scene = new Scene(root);
-        scene.getStylesheets().add("stylesheets/stylesheet.css");
+
+        Element root = FileUtils.readXmlFile("data/data.xml");
+        applyStylesheet(root.getChildText("theme"));
+
         super.setScene(scene);
 
         getIcons().add(new Image("lockb0.5-256px.png"));
@@ -48,11 +56,19 @@ public abstract class AppStage extends Stage {
         loading = false;
     }
 
+    /**
+     * This method replaces the uppermost scene.
+     * @param scene The scene you want the old scene to replace with.
+     */
     public void setScene(AppScene scene) {
         popScene();
         pushScene(scene);
     }
 
+    /**
+     * This method stacks another scene on top of the current scene.
+     * @param scene The scene to stack.
+     */
     public void pushScene(AppScene scene) {
         if (loading) 
             return;
@@ -68,6 +84,9 @@ public abstract class AppStage extends Stage {
         setAccelerators();
     }
 
+    /**
+     * This method removes the uppermost scene of that stage.
+     */
     public void popScene() {
         loading = false;
         if (root.getChildren().size() > 1) {
@@ -77,6 +96,9 @@ public abstract class AppStage extends Stage {
         }
     }
 
+    /**
+     * This method sets accelerators for the uppermost stage.
+     */
     public void setAccelerators() {
         try {
             getScene().getAccelerators().clear();
@@ -84,10 +106,41 @@ public abstract class AppStage extends Stage {
         getScene().getAccelerators().putAll(accelerators.peek());
     }
 
+    /**
+     * This method applies a loading scene to the stage.
+     * @param action What should be loaded.
+     * @return Returns the created loading scene.
+     */
     public LoadingScene applyLoadingScene(Consumer<LoadingScene> action) {
         LoadingScene loadingScene = new LoadingScene(app, action);
         pushScene(loadingScene);
         return loadingScene;
+    }
+
+    /**
+     * This method applies a stylesheet to this stage. Stylesheets must be inside the data/themes folder.
+     * @param name Stylesheet name.
+     */
+    public void applyStylesheet(String name) {
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add("stylesheets/shapes.css");
+        scene.getStylesheets().add("file:///" + Paths.get("data/themes/" + name).toAbsolutePath().toString().replace("\\", "/"));
+    }
+
+    /**
+     * This method should be called instead of <code>show()</code>.
+     */
+    public void start() {
+        show();
+        App.stages.add(this);
+    }
+
+    /**
+     * This method should be called instead of <code>close()</code>.
+     */
+    public void stop() {
+        close();
+        App.stages.add(this);
     }
 
     // GETTERS AND SETTERS

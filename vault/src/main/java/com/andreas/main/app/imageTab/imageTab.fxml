@@ -9,10 +9,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane stylesheets="@../../../../../stylesheets/stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.app.imageTab.ImageTabController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.andreas.main.app.imageTab.ImageTabController">
    <center>
-      <VBox style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <VBox style="-fx-background-color: -fx-tab-color;" BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane style="-fx-background-color: -fx-tab-color;">
+               <content>
+                  <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </center>
+   <top>
+      <VBox prefHeight="0.0" prefWidth="202.0" style="-fx-background-color: -fx-tab-color;" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="sizeIndicator" text="Size: 100%">
                <font>
@@ -27,12 +37,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" />
                </VBox.margin>
             </Slider>
-            <ScrollPane>
-               <content>
-                  <ImageView fx:id="image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-               </content>
-            </ScrollPane>
          </children>
       </VBox>
-   </center>
+   </top>
 </BorderPane>

@@ -56,12 +56,12 @@ public class NewRegisterController extends AppController {
             action.setText("Creating register...");
             saveScene.addRegister(registerName.getText(), registerType.getValue());
             action.endNow(endingAction -> {
-                getScene().getStage().close();
+                getScene().getStage().stop();
             });
         });
     }
 
     public void cancelPressed(MouseEvent event) {
-        getScene().getStage().close();
+        getScene().getStage().stop();
     }
 }
