@@ -18,3 +18,4 @@
 - Themes added dark / light. You can also create custom themes with css.
 - Faster encryption. You can now encrypt large files.
 - Updated backup mechanism
+- Possibility to open files.
