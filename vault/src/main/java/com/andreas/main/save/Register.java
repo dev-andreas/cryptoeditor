@@ -79,6 +79,13 @@ public class Register {
     }
 
     /**
+     * This method opens the register without encrypting the chiper data.
+     */
+    public void open() {
+        open = true;
+    }
+
+    /**
      * This method closes the register and resets all non cipher data.
      */
     public void close() {

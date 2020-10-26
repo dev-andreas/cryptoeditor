@@ -1,7 +1,7 @@
 package com.andreas.main.stages.mainStage.scenes.saveScene;
 
 import com.andreas.main.app.AppController;
-import com.andreas.main.app.RegisterTab;
+import com.andreas.main.app.AppTab;
 import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
 import com.andreas.main.save.SaveTreeItem;
@@ -41,9 +41,6 @@ public class SaveController extends AppController {
 
     @FXML
     public Label fileType;
-
-    @FXML
-    public Label savedState;
 
     @FXML
     public Button saveButton;
@@ -140,9 +137,8 @@ public class SaveController extends AppController {
                     fileType.setText("");
                     return;
                 }
-                savedState.setText(((RegisterTab)newTab).isSaved() ? "" : "Unsaved changes.");
-                registerName.setText(((RegisterTab)newTab).getRegister().getName());
-                fileType.setText(((RegisterTab)newTab).getRegister().getFileType());
+                registerName.setText(((AppTab)newTab).getName());
+                fileType.setText(((AppTab)newTab).getFileType());
 			}
         });
 
@@ -226,12 +222,22 @@ public class SaveController extends AppController {
     }
 
     public void saveCurrentTab() {
-        if (tabs.getSelectionModel().getSelectedIndex() < 0 || savedState.getText().equals(""))
+        AppTab selectedTab = (AppTab)tabs.getSelectionModel().getSelectedItem();
+        if (tabs.getSelectionModel().getSelectedIndex() < 0 || selectedTab.isSaved())
             return;
-        Save save = ((SaveScene) getScene()).getSave();
-        ((RegisterTab)tabs.getSelectionModel().getSelectedItem()).save(save);
 
-        savedState.setText("");
+        Save save = ((SaveScene) getScene()).getSave();
+
+        String path = selectedItem.calculatePath();
+        Register register = new Register(path);
+        register.read();
+        save.openRegister(register);
+
+        ((AppTab)tabs.getSelectionModel().getSelectedItem()).save(action -> {
+
+            register.setContent(action);
+            save.saveRegister(register);
+        });
     }
 
     public void openTab() {
@@ -244,7 +250,7 @@ public class SaveController extends AppController {
             register.read();
             ((SaveScene) getScene()).getSave().openRegister(register);
 
-            RegisterTab tab = RegisterTab.getCorrectTab((SaveScene)getScene(), register);
+            AppTab tab = SaveScene.getCorrectTab((SaveScene)getScene(), register);
             
             action.endNow(endingAction -> {
                 tabs.getTabs().add(tab);

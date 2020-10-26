@@ -1,23 +1,31 @@
 package com.andreas.main.app;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextArea;
 
-public class TextTab extends RegisterTab {
+public class TextTab extends AppTab {
 
     private TextArea textArea;
 
-    public TextTab(SaveScene saveScene, Register register) {
-        super(saveScene, register, true);
+    public TextTab(AppScene scene, Register register) {
+        super(scene, register, true);
+        init();
+    }
 
+    public TextTab(AppScene scene, Path path) {
+        super(scene, path);
+        init();        
+    }
+
+    private void init() {
         textArea = new TextArea();
-        textArea.setText(new String(register.getContent(), StandardCharsets.UTF_8));
+        textArea.setText(new String(data, StandardCharsets.UTF_8));
 
         setContent(textArea);
 

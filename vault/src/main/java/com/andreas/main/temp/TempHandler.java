@@ -10,7 +10,7 @@ import com.andreas.main.FileUtils;
  */
 public class TempHandler implements Runnable {
 
-    public static final float CLEANINGS_PER_SECONDS = 1f;
+    public static final float CLEANINGS_PER_SECONDS = 10f;
 
     private boolean running, tempFileExists, isOrdered;
     private long cleaningTime;
@@ -72,7 +72,7 @@ public class TempHandler implements Runnable {
     }
 
     /**
-     * This method stops the thred.
+     * This method stops the thread.
      */
     public void stop() {
         running = false;
@@ -84,5 +84,11 @@ public class TempHandler implements Runnable {
     public void orderDelete() {
         isOrdered = true;
         clean();
+    }
+
+    // GETTERS AND SETTERS 
+
+    public Path getTempPath() {
+        return tempPath;
     }
 }

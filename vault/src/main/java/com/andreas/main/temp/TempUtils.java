@@ -1,7 +1,6 @@
 package com.andreas.main.temp;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.andreas.main.FileUtils;
@@ -31,7 +30,7 @@ public class TempUtils {
      * @param data The data as <code>byte[]</code> that should be inside the temp file.
      * @return Returns the path of the created temp file.
      */
-    public static Path createTempFile(byte[] data) {
+    public static TempHandler createTempFile(byte[] data, boolean waitUntilOrdered) {
 
         if (!Files.exists(Paths.get("data/temp/")))
             FileUtils.createDirectories("data/temp/");
@@ -39,10 +38,12 @@ public class TempUtils {
         String name = System.nanoTime() + ".tmp";
         FileUtils.createBinaryFile("data/temp/" + name, data);
 
-        Thread tempHandlerThread = new Thread(new TempHandler(Paths.get("data/temp/" + name)));
+        TempHandler tempHandler = new TempHandler(Paths.get("data/temp/" + name), waitUntilOrdered);
+
+        Thread tempHandlerThread = new Thread(tempHandler);
         tempHandlerThread.setDaemon(true);
         tempHandlerThread.start();
 
-        return Paths.get("data/temp/" + name);
+        return tempHandler;
     }
 }

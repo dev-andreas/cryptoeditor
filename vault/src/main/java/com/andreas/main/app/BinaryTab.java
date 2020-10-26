@@ -1,31 +1,33 @@
 package com.andreas.main.app;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import com.andreas.main.FileUtils;
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.StageUtils;
-import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class BinaryTab extends RegisterTab {
-
-    private SaveScene saveScene;
+public class BinaryTab extends AppTab {
 
     private VBox box;
     private Text text;
 
-    public BinaryTab(SaveScene saveScene, Register register) {
-        super(saveScene, register, false);
+    public BinaryTab(AppScene scene, Register register) {
+        super(scene, register, false);
 
-        this.saveScene = saveScene;
+        init();
+    }
 
-        text = new Text("This register appears to be binary and is therefore not readable!");
+    public BinaryTab(AppScene scene, Path path) {
+        super(scene, path);
+
+        init();
+    }
+
+    private void init() {
+        text = new Text("This register appears to be binary and therefore not readable!");
         text.setFill(new Color(.60, .60, .60, 1));
         text.setStyle("-fx-font-size: 16;");
 
@@ -34,14 +36,6 @@ public class BinaryTab extends RegisterTab {
         box.getChildren().add(text);
         
         setContent(box);
-    }
-
-    public void open() {
-        saveScene.getStage().applyLoadingScene(action -> {
-            FileUtils.createDirectories(StageUtils.SAVES_PATH + "temp");
-            Path path = Paths.get(StageUtils.SAVES_PATH + "temp/" + System.nanoTime() + register.getFileType());
-            FileUtils.createBinaryFile(path.toString(), register.getContent());
-        });
     }
 
     @Override

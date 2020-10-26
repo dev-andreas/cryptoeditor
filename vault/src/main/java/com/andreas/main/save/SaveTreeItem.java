@@ -57,12 +57,7 @@ public class SaveTreeItem extends TreeItem<String> {
      * Updates the value of this item.
      */
     public void updateValue() {
-        boolean contains = false;
-        for (int i = 0; i < Register.INTERN_FILE_TYPES.length; i++)
-            if (Register.INTERN_FILE_TYPES[i].equals(type))
-                contains = true;
-
-        setValue(name + (contains ? "" : type));
+        setValue(name + type);
     }
 
     /**

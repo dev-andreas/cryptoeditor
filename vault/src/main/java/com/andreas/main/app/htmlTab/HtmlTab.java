@@ -1,11 +1,11 @@
 package com.andreas.main.app.htmlTab;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
 import com.andreas.main.app.AppScene;
-import com.andreas.main.app.RegisterTab;
+import com.andreas.main.app.AppTab;
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -13,27 +13,34 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.web.HTMLEditor;
 
-public class HtmlTab extends RegisterTab {
+public class HtmlTab extends AppTab {
 
     private HtmlTabController controller;
 
     private HTMLEditor htmlEditor;
     private TextArea textArea;
 
-    public HtmlTab(SaveScene saveScene, Register register) {
-        super(saveScene, register, true);
+    public HtmlTab(AppScene appScene, Register register) {
+        super(appScene, register, true);
+        init(appScene);
+    }
 
-        AppScene content = new AppScene(saveScene.getApp(), "app/htmlTab/htmlTab.fxml", "");
+    public HtmlTab(AppScene appScene, Path path) {
+        super(appScene, path);
+        init(appScene);
+    }
+
+    private void init(AppScene appScene) {
+        AppScene content = new AppScene(appScene.getApp(), "app/htmlTab/htmlTab.fxml", "");
         
-        content.setStage(saveScene.getStage());
+        content.setStage(appScene.getStage());
         controller = ((HtmlTabController) content.getController());
-        controller.setRegister(register);
         controller.setHtmlTab(this);
         content.init();
 
         setContent(content.getRoot());
 
-        String registerContent = new String(register.getContent(), StandardCharsets.UTF_8);
+        String registerContent = new String(data, StandardCharsets.UTF_8);
         
         Platform.runLater(new Runnable() {
             @Override

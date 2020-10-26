@@ -1,22 +1,19 @@
 package com.andreas.main.app.mediaTab;
 
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-
 import com.andreas.main.app.AppController;
-import com.andreas.main.save.Register;
 import com.andreas.main.stages.StageUtils;
-import com.andreas.main.temp.TempUtils;
 
-import javafx.beans.property.DoubleProperty;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -27,7 +24,7 @@ public class MediaTabController extends AppController {
     @FXML
     public MediaView video;
     @FXML
-    public ToggleButton play;
+    public Button play;
     @FXML
     public Button replay;
     @FXML
@@ -42,15 +39,16 @@ public class MediaTabController extends AppController {
     public Label timeIndex;
     @FXML
     public Label volumeIcon;
+    @FXML
+    public StackPane view;
 
     private Media media;
     private MediaPlayer mediaPlayer;
 
-    private Register register;
+    private boolean playing;
 
     @Override
     public void init() {
-        Media media = loadMedia();
         mediaPlayer = new MediaPlayer(media);
         video.setMediaPlayer(mediaPlayer);
 
@@ -72,13 +70,21 @@ public class MediaTabController extends AppController {
             }
         });
 
-        
+        InvalidationListener resizeMediaView = this::resizeVideo;
+        view.heightProperty().addListener(resizeMediaView);
+        view.widthProperty().addListener(resizeMediaView);
 
-        DoubleProperty widthProp = video.fitWidthProperty();
-        DoubleProperty heightProp = video.fitHeightProperty();
+        playing = false;
+    }
 
-        widthProp.bind(tab.widthProperty());
-        heightProp.bind(tab.heightProperty());
+    private void resizeVideo(Observable observable) {
+        video.setFitWidth(view.getWidth());
+        video.setFitHeight(view.getHeight());
+    
+       
+        Bounds actualVideoSize = video.getLayoutBounds();
+        video.setX((video.getFitWidth() - actualVideoSize.getWidth()) / 2);
+        video.setY((video.getFitHeight() - actualVideoSize.getHeight()) / 2);
     }
 
     @FXML
@@ -100,18 +106,19 @@ public class MediaTabController extends AppController {
             volumeIcon.setStyle("-fx-shape: -fx-volume-middle-shape;");
         else
             volumeIcon.setStyle("-fx-shape: -fx-volume-loud-shape;");
-
     }
 
     @FXML
     private void playPressed() {
-        if (play.isSelected()) {
+
+        if (!playing) {
             mediaPlayer.play();
-            playIcon.setStyle("-fx-shape: -fx-play-shape;");
+            playIcon.setStyle("-fx-shape: -fx-pause-shape;");
+            playing = true;
         } else {
             mediaPlayer.pause();
-            playIcon.setStyle("-fx-shape: -fx-pause-shape;");
-            mediaPlayer.dispose();
+            playIcon.setStyle("-fx-shape: -fx-play-shape;");
+            playing = false;
         }
     }
 
@@ -124,25 +131,9 @@ public class MediaTabController extends AppController {
                 + StageUtils.secondsToNiceLayout((int) media.getDuration().toSeconds()));
     }
 
-    private Media loadMedia() {
-        Path path = TempUtils.createTempFile(register.getContent());
-        Media media = null;
-        try {
-            media = new Media(path.toAbsolutePath().toUri().toURL().toExternalForm());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        return media;
-    }
-
     // GETTERS AND SETTERS
 
-    public Register getRegister() {
-        return register;
-    }
-
-    public void setRegister(Register register) {
-        this.register = register;
+    public void setMedia(Media media) {
+        this.media = media;
     }
 }

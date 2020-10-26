@@ -404,18 +404,18 @@
     -fx-background-color: transparent;
 }
 
+.media-icon {
+    -fx-background-color: derive(-fx-tab-color, +10%);
+    -fx-text-fill: transparent;
+    -fx-scale-shape: false;
+}
+
 .media-button:hover *.media-icon{
     -fx-background-color: white;
 }
 
 .media-button:armed *.media-icon{
     -fx-background-color: -fx-primary-gradient;
-}
-
-.media-icon {
-    -fx-background-color: derive(-fx-tab-color, +10%);
-    -fx-text-fill: transparent;
-    -fx-scale-shape: false;
 }
 
 .media-bar {

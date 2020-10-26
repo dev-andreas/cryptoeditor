@@ -9,6 +9,11 @@ import java.util.stream.Stream;
 
 import com.andreas.main.FileUtils;
 import com.andreas.main.app.AppScene;
+import com.andreas.main.app.AppTab;
+import com.andreas.main.app.BinaryTab;
+import com.andreas.main.app.TextTab;
+import com.andreas.main.app.htmlTab.HtmlTab;
+import com.andreas.main.app.imageTab.ImageTab;
 import com.andreas.main.save.Register;
 import com.andreas.main.save.Save;
 import com.andreas.main.save.SaveTreeItem;
@@ -17,6 +22,33 @@ import com.andreas.main.stages.StageUtils;
 import javafx.application.Application;
 
 public class SaveScene extends AppScene {
+
+    public static AppTab getCorrectTab(AppScene appScene, Register register) {
+        if (!register.isOpen())
+            return null;
+        
+        if (FileUtils.seemsBinary(register.getContent())) {
+            for (int i = 0; i < Register.ACCEPTED_IMAGE_FILE_TYPES.length; i++) {
+                if (Register.ACCEPTED_IMAGE_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
+                    return new ImageTab(appScene, register);
+            }
+            /*
+            for (int i = 0; i < Register.ACCEPTED_MEDIA_FILE_TYPES.length; i++) {
+                if (Register.ACCEPTED_MEDIA_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
+                    return new MediaTab(saveScene, register);
+            }
+            */
+            return new BinaryTab(appScene, register);
+        } else {
+            for (int i = 0; i < Register.ACCEPTED_HTML_FILE_TYPES.length; i++) {
+                if (Register.ACCEPTED_HTML_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
+                    return new HtmlTab(appScene, register);
+            }
+            return new TextTab(appScene, register);
+        }
+    }
+
+    // CLASS
 
     private Save save;
 

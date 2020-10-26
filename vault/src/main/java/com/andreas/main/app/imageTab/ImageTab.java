@@ -1,19 +1,53 @@
 package com.andreas.main.app.imageTab;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+
 import com.andreas.main.app.AppScene;
-import com.andreas.main.app.RegisterTab;
+import com.andreas.main.app.AppTab;
 import com.andreas.main.save.Register;
-import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
+import com.andreas.main.temp.TempHandler;
+import com.andreas.main.temp.TempUtils;
+
+import javafx.scene.image.Image;
 
 
-public class ImageTab extends RegisterTab {
+public class ImageTab extends AppTab {
 
-    public ImageTab(SaveScene saveScene, Register register) {
-        super(saveScene, register, false);
+    
+    public ImageTab(AppScene appScene, Register register) {
+        super(appScene, register, false);
 
-        AppScene content = new AppScene(saveScene.getApp(), "app/imageTab/imageTab.fxml", "");
-        content.setStage(saveScene.getStage());
-        ((ImageTabController) content.getController()).setRegister(register);
+        TempHandler tempHandler = TempUtils.createTempFile(data, true);
+        Image image = null;
+        try {
+            image = new Image(tempHandler.getTempPath().toAbsolutePath().toUri().toURL().toExternalForm());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        tempHandler.orderDelete();
+
+        init(appScene, image);
+    }
+
+    public ImageTab(AppScene appScene, Path path) {
+        super(appScene, path);
+
+        Image image = null;
+        try {
+            image = new Image(path.toAbsolutePath().toUri().toURL().toExternalForm());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        init(appScene, image);
+    }
+
+    private void init(AppScene appScene, Image image) {
+        AppScene content = new AppScene(appScene.getApp(), "app/imageTab/imageTab.fxml", "");
+        content.setStage(appScene.getStage());
+        ((ImageTabController) content.getController()).setImageFile(image);
         content.init();
 
         setContent(content.getRoot());

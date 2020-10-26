@@ -94,11 +94,6 @@
                         <Insets top="9.0" />
                      </HBox.margin>
                   </Label>
-                  <Label fx:id="savedState">
-                     <HBox.margin>
-                        <Insets left="10.0" top="9.0" />
-                     </HBox.margin>
-                  </Label>
                </children>
             </HBox>
             <TabPane fx:id="tabs" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS" VBox.vgrow="ALWAYS" />

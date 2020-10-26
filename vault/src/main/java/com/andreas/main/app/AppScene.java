@@ -20,6 +20,7 @@ public class AppScene extends Scene {
         super(new Parent() {});
 
         this.app = app;
+        this.title = title;
 
         try {
             loader = new FXMLLoader(app.getClass().getResource(fxmlPath));

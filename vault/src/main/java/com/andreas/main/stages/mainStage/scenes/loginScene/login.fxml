@@ -9,6 +9,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
@@ -133,11 +134,13 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Edit">
+          <Menu mnemonicParsing="false" text="File">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#addSave" text="New save... (Ctrl + C)" />
                   <MenuItem mnemonicParsing="false" onAction="#renameSave" text="Rename save... (Ctrl + R)" />
                   <MenuItem mnemonicParsing="false" onAction="#deleteSave" text="Delete save... (Ctrl + D)" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open File... (Ctrl + O)" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Settings">

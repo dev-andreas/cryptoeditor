@@ -22,6 +22,7 @@ import com.andreas.main.cryptography.SHA;
 import com.andreas.main.save.Save;
 import com.andreas.main.stages.StageUtils;
 import com.andreas.main.stages.createKeyStage.CreateKeyStage;
+import com.andreas.main.stages.fileStage.FileStage;
 import com.andreas.main.stages.mainStage.scenes.saveScene.SaveScene;
 import com.andreas.main.stages.newSaveStage.NewSaveStage;
 import com.andreas.main.stages.removeSaveStage.RemoveSaveStage;
@@ -31,6 +32,7 @@ import com.andreas.main.stages.themeSelectorStage.ThemeSelectorStage;
 import org.jdom2.Element;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.security.KeyPair;
 import java.util.Arrays;
 
@@ -73,6 +75,10 @@ public class LoginController extends AppController {
 
         getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.D, KeyCombination.SHORTCUT_DOWN), () -> {
             deleteSave();
+        });
+
+        getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.O, KeyCombination.SHORTCUT_DOWN), () -> {
+            openFile();
         });
 
         setEditable();
@@ -187,6 +193,16 @@ public class LoginController extends AppController {
     @FXML
     private void renameSave() {
         RenameSaveStage stage = new RenameSaveStage(getScene().getStage().getApp(), (LoginScene)getScene());
+        stage.start();
+    }
+
+    @FXML
+    private void openFile() {
+        FileChooser fc = new FileChooser();
+        Path file = fc.showOpenDialog(null).toPath();
+
+
+        FileStage stage = new FileStage(getScene().getStage().getApp(), file);
         stage.start();
     }
 
