@@ -18,8 +18,8 @@
 - Themes added dark / light. You can also create custom themes with css
 - Faster encryption. You can now encrypt large files
 - Updated backup mechanism
-- Possibility to open files
-- Video and audio support on unencrypted files (AIF, FXM, FLV, M3U8, MP3, MP4, M4A, M4V, WAV)
+- Possibility to open unencrypted files
+- Video and audio support for unencrypted files (AIF, FXM, FLV, M3U8, MP3, MP4, M4A, M4V, WAV)
 - Bug fixes
 
 ## V1.4.1
