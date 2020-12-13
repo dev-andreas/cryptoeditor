@@ -120,7 +120,6 @@ public class SaveScene extends AppScene {
             FileUtils.deleteDirectory(item.calculatePath());
         } else {
             String filePath = item.calculatePath();
-            System.out.println(filePath);
             FileUtils.deleteFile(filePath + ".prp");
             FileUtils.deleteFile(filePath + ".cnt");
         }
