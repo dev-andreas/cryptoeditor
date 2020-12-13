@@ -12,6 +12,7 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -59,17 +60,14 @@
                      <children>
                         <Label text="CRYPTOEDITOR V1.4">
                            <HBox.margin>
-                              <Insets right="40.0" top="20.0" />
+                              <Insets right="15.0" />
                            </HBox.margin>
                         </Label>
-                        <Label>
-                           <graphic>
-                              <Label scaleX="100.0" scaleY="100.0" scaleZ="100.0" style="-fx-shape: -fx-lock-shape; -fx-background-color: -fx-primary-gradient;" styleClass="icon-label" />
-                           </graphic>
+                        <ImageView fx:id="logo" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
-                              <Insets right="50.0" />
+                              <Insets right="30.0" />
                            </HBox.margin>
-                        </Label>
+                        </ImageView>
                      </children>
                      <VBox.margin>
                         <Insets bottom="20.0" />
@@ -145,7 +143,6 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Settings">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Languages..." />
                   <MenuItem mnemonicParsing="false" onAction="#selectTheme" text="Themes..." />
             </items>
           </Menu>

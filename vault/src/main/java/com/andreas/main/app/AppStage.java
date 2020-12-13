@@ -1,8 +1,9 @@
 package com.andreas.main.app;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.Stack;
+import java.util.List;
 import java.util.function.Consumer;
 
 import com.andreas.main.App;
@@ -30,7 +31,7 @@ public abstract class AppStage extends Stage {
 
     private Scene scene;
     private StackPane root;
-    private Stack<ObservableMap<KeyCombination, Runnable>> accelerators;
+    private List<ObservableMap<KeyCombination, Runnable>> accelerators;
 
     private boolean loading;
 
@@ -42,7 +43,7 @@ public abstract class AppStage extends Stage {
         this.app = app;
 
         root = new StackPane();
-        accelerators = new Stack<>();
+        accelerators = new ArrayList<>();
 
         scene = new Scene(root);
 
@@ -51,7 +52,7 @@ public abstract class AppStage extends Stage {
 
         super.setScene(scene);
 
-        getIcons().add(new Image("lockb0.5-256px.png"));
+        getIcons().add(new Image("ce-logo_alpha.png"));
 
         loading = false;
     }
@@ -80,7 +81,7 @@ public abstract class AppStage extends Stage {
         scene.setStage(this);
         scene.init();
 
-        accelerators.push(scene.getAccelerators());
+        accelerators.add(scene.getAccelerators());
         setAccelerators();
     }
 
@@ -91,7 +92,7 @@ public abstract class AppStage extends Stage {
         loading = false;
         if (root.getChildren().size() > 1) {
             root.getChildren().remove(root.getChildren().size() - 1);
-            accelerators.pop();
+            accelerators.remove(accelerators.size() - 1);
             setAccelerators();
         }
     }
@@ -103,7 +104,7 @@ public abstract class AppStage extends Stage {
         try {
             getScene().getAccelerators().clear();
         } catch (ConcurrentModificationException e) { }
-        getScene().getAccelerators().putAll(accelerators.peek());
+        getScene().getAccelerators().putAll(accelerators.get(accelerators.size() - 1));
     }
 
     /**

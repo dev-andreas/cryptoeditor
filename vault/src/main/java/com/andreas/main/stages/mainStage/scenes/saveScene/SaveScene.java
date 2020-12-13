@@ -119,7 +119,10 @@ public class SaveScene extends AppScene {
         if (item.getType().equals(Register.DIRECTORY)) {
             FileUtils.deleteDirectory(item.calculatePath());
         } else {
-            FileUtils.deleteFile(item.calculatePath());
+            String filePath = item.calculatePath();
+            System.out.println(filePath);
+            FileUtils.deleteFile(filePath + ".prp");
+            FileUtils.deleteFile(filePath + ".cnt");
         }
         item.getParent().getChildren().remove(item);
     }

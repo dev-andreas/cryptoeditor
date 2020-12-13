@@ -122,10 +122,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Settings">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Languages..." />
                   <MenuItem mnemonicParsing="false" onAction="#selectTheme" text="Themes..." />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-              <MenuItem mnemonicParsing="false" text="Delete Save" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

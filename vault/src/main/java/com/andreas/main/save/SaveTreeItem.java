@@ -57,7 +57,7 @@ public class SaveTreeItem extends TreeItem<String> {
      * Updates the value of this item.
      */
     public void updateValue() {
-        setValue(name + type);
+        setValue(name + (type.equals(Register.DIRECTORY) ? "" : type));
     }
 
     /**

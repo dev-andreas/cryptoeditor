@@ -5,6 +5,8 @@ import java.util.function.Consumer;
 import com.andreas.main.app.AppScene;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
 
 public class LoadingScene extends AppScene {
@@ -19,12 +21,23 @@ public class LoadingScene extends AppScene {
 
     private LoadingService service;
 
+    private LoadingController loadingController;
+
     public LoadingScene(Application app, Consumer<LoadingScene> action) {
         super(app, "scenes/loadingScene/loading.fxml", "");
         this.action = action;
 
         postAction = noneAction;
         endingAction = noneAction;
+
+        loadingController = (LoadingController) getController();
+
+        loadingController.fade(0.75, new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                
+            }
+        });
     }
     
     @Override

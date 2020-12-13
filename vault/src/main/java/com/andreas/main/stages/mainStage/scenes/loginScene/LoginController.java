@@ -9,6 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -54,6 +56,8 @@ public class LoginController extends AppController {
 
     @FXML
     public Button open;
+    @FXML
+    public ImageView logo;
 
     private int index;
 
@@ -84,6 +88,7 @@ public class LoginController extends AppController {
         setEditable();
 
         keyPath.setText(readKeyPath());
+        logo.setImage(new Image("ce-logo_alpha.png"));
     }
 
     @FXML
