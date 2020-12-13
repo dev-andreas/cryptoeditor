@@ -21,3 +21,6 @@
 - Possibility to open files
 - Video and audio support on unencrypted files (AIF, FXM, FLV, M3U8, MP3, MP4, M4A, M4V, WAV)
 - Bug fixes
+
+## V1.4.1
+- Bug fixes
