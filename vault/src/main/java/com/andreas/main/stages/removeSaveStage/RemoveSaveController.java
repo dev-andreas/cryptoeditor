@@ -14,7 +14,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
 
-public class RemoveSaveController extends AppController{
+public class RemoveSaveController extends AppController {
 
     @FXML
     public PasswordField password = new PasswordField();
@@ -27,7 +27,7 @@ public class RemoveSaveController extends AppController{
 
     @Override
     public void init() {
-        loginScene = ((RemoveSaveStage)getScene().getStage()).getLoginScene();
+        loginScene = ((RemoveSaveStage) getScene().getStage()).getLoginScene();
         loginController = (LoginController) loginScene.getController();
 
         getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
@@ -36,21 +36,25 @@ public class RemoveSaveController extends AppController{
     }
 
     public void deletePressed(MouseEvent event) {
-        
+
         int index = loginController.savesList.getSelectionModel().getSelectedIndex();
 
         getScene().getStage().applyLoadingScene(action -> {
             action.setText("Deleting save...");
             Save save = new Save();
             save.read(StageUtils.SAVES_PATH + loginController.savesList.getItems().get(index) + "/saveData.xml");
-    
+
             if (!SHA.verify(password.getText(), save.getPasswordSalt(), save.getPasswordHash())) {
                 StageUtils.pushNotification("Passwords do not match!");
-                action.endNow(endingAction -> {StageUtils.pushNotification("Passwords do not match!");});
+                action.endNow(endingAction -> {
+                    StageUtils.pushNotification("Passwords do not match!");
+                });
             }
-    
-            loginScene.removeSave(save, loginController.savesList.getSelectionModel().getSelectedIndex());
-            action.endNow(endingAction -> {getScene().getStage().stop();});
+
+            action.endNow(endingAction -> {
+                loginScene.removeSave(save, loginController.savesList.getSelectionModel().getSelectedIndex());
+                getScene().getStage().stop();
+            });
         });
     }
 

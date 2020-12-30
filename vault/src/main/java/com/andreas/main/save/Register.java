@@ -14,11 +14,17 @@ import org.jdom2.Element;
 
 public class Register {
 
-    public static final String DEFAULT_FILE_TYPE = ".txt", DIRECTORY = ".directory", HTML = ".html";
+    public static final String DEFAULT_FILE_TYPE = ".txt", DIRECTORY = ".directory", HTML = ".html", ACCOUNT = ".account";
+
     public static final String[] INTERN_FILE_TYPES = new String[] {
         DEFAULT_FILE_TYPE,
         HTML,
         DIRECTORY,
+    };
+
+    public static final String[] UNCHANGEABLE_FILE_TYPES = new String[] {
+        DIRECTORY,
+        ACCOUNT,
     };
 
     public static final String[] ACCEPTED_IMAGE_FILE_TYPES = new String[] {

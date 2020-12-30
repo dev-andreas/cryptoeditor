@@ -96,6 +96,9 @@ public class SaveScene extends AppScene {
         SaveController saveController = (SaveController)getController();
         SaveTreeItem item = saveController.selectedItem;
 
+        String filePath = item.calculatePath();
+        String nameCipher = FileUtils.bytesToHex(getSave().encrypt((name + type).getBytes(StandardCharsets.UTF_8)));
+
         if (!item.getType().equals(Register.DIRECTORY)) {
             Register register = new Register(item.calculatePath());
             register.read();
@@ -104,10 +107,12 @@ public class SaveScene extends AppScene {
             register.setFileType(type);
             getSave().saveRegister(register);
             register.close();
-        }
 
-        String nameCipher = FileUtils.bytesToHex(getSave().encrypt(name.getBytes(StandardCharsets.UTF_8)));
-        FileUtils.renamePath(item.calculatePath(), nameCipher);
+            FileUtils.renamePath(filePath + Register.PROPERTIES_SUFFIX, nameCipher + Register.PROPERTIES_SUFFIX);
+            FileUtils.renamePath(filePath + Register.CONTENT_SUFFIX, nameCipher + Register.CONTENT_SUFFIX);
+        } else {
+            FileUtils.renamePath(filePath, nameCipher);
+        }
 
         item.setName(name);
         item.setType(type);
@@ -120,9 +125,8 @@ public class SaveScene extends AppScene {
             FileUtils.deleteDirectory(item.calculatePath());
         } else {
             String filePath = item.calculatePath();
-            System.out.println(filePath);
-            FileUtils.deleteFile(filePath + ".prp");
-            FileUtils.deleteFile(filePath + ".cnt");
+            FileUtils.deleteFile(filePath + Register.PROPERTIES_SUFFIX);
+            FileUtils.deleteFile(filePath + Register.CONTENT_SUFFIX);
         }
         item.getParent().getChildren().remove(item);
     }

@@ -28,9 +28,9 @@ public class NewRegisterController extends AppController {
     public void init() {
 
         saveScene = ((NewRegisterStage) getScene().getStage()).getSaveScene();
-        saveController = (SaveController)saveScene.getController();
+        saveController = (SaveController) saveScene.getController();
 
-        // Shortcuts      
+        // Shortcuts
         getScene().getAccelerators().put(new KeyCodeCombination(KeyCode.ENTER), () -> {
             createPressed(null);
         });
@@ -40,21 +40,25 @@ public class NewRegisterController extends AppController {
     }
 
     public void createPressed(MouseEvent event) {
-        
 
         if (registerName.getText().isEmpty()) {
             StageUtils.pushNotification("Please enter a register name!");
             return;
         }
 
-        if (saveController.nameExists(registerName.getText()+registerType.getValue())) {
+        if (saveController.nameExists(registerName.getText() + registerType.getValue())) {
             StageUtils.pushNotification("Name already exists!");
             return;
         }
 
         getScene().getStage().applyLoadingScene(action -> {
             action.setText("Creating register...");
-            saveScene.addRegister(registerName.getText(), registerType.getValue());
+
+            if (registerType.getValue().charAt(0) == '.')
+                saveScene.addRegister(registerName.getText(), registerType.getValue());
+            else
+                saveScene.addRegister(registerName.getText(), "." + registerType.getValue());
+
             action.endNow(endingAction -> {
                 getScene().getStage().stop();
             });
