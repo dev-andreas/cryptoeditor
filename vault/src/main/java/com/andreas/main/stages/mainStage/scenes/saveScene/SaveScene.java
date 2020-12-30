@@ -125,7 +125,6 @@ public class SaveScene extends AppScene {
             FileUtils.deleteDirectory(item.calculatePath());
         } else {
             String filePath = item.calculatePath();
-
             FileUtils.deleteFile(filePath + Register.PROPERTIES_SUFFIX);
             FileUtils.deleteFile(filePath + Register.CONTENT_SUFFIX);
         }
