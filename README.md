@@ -7,5 +7,4 @@ This is an editor which encrypts your files or passwords you want to protect. Yo
 - USB Stick or similar can be used as a token.
 
 ## IMPORTANT:
-
-Very important data e.g. credit card numbers or similar should not be stored in this vault! I'm not a professional cryptographer.
+### Vulnerable data e.g. credit card numbers or similar should not be stored in this vault! I'm not a professional cryptographer.
