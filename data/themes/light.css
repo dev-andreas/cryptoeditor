@@ -26,9 +26,9 @@
 .button {
     -fx-background-color: transparent;
     -fx-border-color: -fx-secondary-color;
-    -fx-border-radius: 20px;
-    -fx-background-radius: 20px;
-    -fx-border-width: 3px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-border-width: 2px;
 }
 
 .button:hover {
