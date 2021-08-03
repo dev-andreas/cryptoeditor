@@ -52,7 +52,7 @@ public abstract class AppStage extends Stage {
 
         super.setScene(scene);
 
-        getIcons().add(new Image("ce-logo_alpha.png"));
+        getIcons().add(new Image("ce-logo_alpha2.png"));
 
         loading = false;
     }

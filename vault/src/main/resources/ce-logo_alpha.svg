@@ -489,7 +489,7 @@
        x2="58.869457"
        y2="106.87771"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,0.69075524,21.322938,-56.774388)" />
+       gradientTransform="matrix(1.3334761,0,0,0.92110556,-11.130789,-77.224437)" />
   </defs>
   <sodipodi:namedview
      pagecolor="#ffffff"
@@ -500,20 +500,20 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1896"
-     inkscape:window-height="992"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
      id="namedview4"
      showgrid="false"
      inkscape:object-paths="true"
      inkscape:snap-intersection-paths="true"
      inkscape:snap-smooth-nodes="true"
      inkscape:snap-midpoints="true"
-     inkscape:zoom="0.1767767"
-     inkscape:cx="1228.0831"
-     inkscape:cy="608.35757"
-     inkscape:window-x="12"
-     inkscape:window-y="39"
-     inkscape:window-maximized="0"
+     inkscape:zoom="1"
+     inkscape:cx="103.36128"
+     inkscape:cy="303.44162"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      inkscape:snap-nodes="true" />
@@ -528,16 +528,17 @@
       <rect
          style="fill:url(#linearGradient929);fill-opacity:1;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
          id="rect921"
-         width="21.247799"
-         height="73.410789"
-         x="71.641502"
-         y="-39.194172"
-         ry="2.1049402"
+         width="28.333431"
+         height="97.891533"
+         x="55.967808"
+         y="-53.781643"
+         ry="2.8068874"
          transform="rotate(45)" />
       <path
          id="rect3124"
          style="opacity:1;fill:url(#linearGradient3252);fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:0;paint-order:stroke fill markers;filter:url(#filter3842)"
-         d="m 43.703316,57.613058 -2.215464,2.215464 -2.215467,2.215467 -7.558454,7.558454 -3.035077,3.035077 c -1.227392,1.227391 -1.227389,3.203539 2e-6,4.43093 l 10.593531,10.59353 56.696275,56.69627 c 1.22739,1.22739 3.20354,1.2274 4.430928,0 l 10.59353,-10.59353 c 1.22739,-1.22739 1.22739,-3.20354 0,-4.43093 L 56.512314,74.852984 47.53425,65.874922 43.703318,62.043988 c -1.227391,-1.227391 -1.227386,-3.203546 -2e-6,-4.43093 z" />
+         d="m 43.703316,57.613058 -2.215464,2.215464 -2.215467,2.215467 -7.558454,7.558454 -3.035077,3.035077 c -1.227392,1.227391 -1.227389,3.203539 2e-6,4.43093 l 10.593531,10.59353 56.696275,56.69627 c 1.22739,1.22739 3.20354,1.2274 4.430928,0 l 10.59353,-10.59353 c 1.22739,-1.22739 1.22739,-3.20354 0,-4.43093 L 56.512314,74.852984 47.53425,65.874922 43.703318,62.043988 c -1.227391,-1.227391 -1.227386,-3.203546 -2e-6,-4.43093 z"
+         transform="matrix(1.3334761,0,0,1.3334761,-26.90348,-29.049054)" />
       <rect
          style="opacity:1;fill:url(#linearGradient3276);fill-opacity:1;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;filter:url(#filter3878)"
          id="rect3256"
@@ -546,7 +547,7 @@
          x="-28.763494"
          y="97.115097"
          ry="3.2287531"
-         transform="rotate(-45,4.7500375,-34.514522)" />
+         transform="matrix(0.94290995,-0.94290995,0.94290995,0.94290995,7.4958093,-38.050397)" />
       <rect
          style="opacity:1;fill:url(#linearGradient3268);fill-opacity:1;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;filter:url(#filter3866)"
          id="rect3258"
@@ -555,7 +556,7 @@
          x="-18.236383"
          y="86.636902"
          ry="3.0810046"
-         transform="rotate(-45,4.7500375,-34.514522)" />
+         transform="matrix(0.94290995,-0.94290995,0.94290995,0.94290995,7.4958093,-38.050397)" />
       <rect
          style="opacity:1;fill:url(#linearGradient3290);fill-opacity:1;fill-rule:nonzero;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers;filter:url(#filter3446)"
          id="rect3282"
@@ -563,7 +564,8 @@
          height="21.247717"
          x="75.433128"
          y="64.21003"
-         ry="3.2665017" />
+         ry="3.2665017"
+         transform="matrix(1.3334761,0,0,1.3334761,-26.90348,-29.049054)" />
     </g>
   </g>
 </svg>
