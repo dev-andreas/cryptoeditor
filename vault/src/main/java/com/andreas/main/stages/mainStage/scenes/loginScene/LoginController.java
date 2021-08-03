@@ -88,7 +88,7 @@ public class LoginController extends AppController {
         setEditable();
 
         keyPath.setText(readKeyPath());
-        logo.setImage(new Image("ce-logo_alpha.png"));
+        logo.setImage(new Image("ce-logo_alpha2.png"));
     }
 
     @FXML

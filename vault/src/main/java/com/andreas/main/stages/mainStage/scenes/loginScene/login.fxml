@@ -63,7 +63,7 @@
                               <Insets right="15.0" />
                            </HBox.margin>
                         </Label>
-                        <ImageView fx:id="logo" fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="logo" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                            <HBox.margin>
                               <Insets right="30.0" />
                            </HBox.margin>

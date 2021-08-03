@@ -9,3 +9,7 @@ An editor which can encryptfiles and passwords. You can encrypt data or create y
 
 ## IMPORTANT:
 ### Vulnerable data e.g. credit card numbers or similar should not be stored in this vault! I'm not a professional cryptographer.
+
+## TODO:
+- Update theme
+- Automatically create new data files when deleted
