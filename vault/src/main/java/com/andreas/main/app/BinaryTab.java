@@ -3,25 +3,26 @@ package com.andreas.main.app;
 import java.nio.file.Path;
 
 import com.andreas.main.save.Register;
+import com.andreas.main.save.SaveTreeItem;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public class BinaryTab extends AppTab {
+public abstract class BinaryTab extends AppTab {
 
     private VBox box;
     private Text text;
 
-    public BinaryTab(AppScene scene, Register register) {
-        super(scene, register, false);
+    public BinaryTab(Register register, SaveTreeItem saveTreeItem) {
+        super(register, false, saveTreeItem);
 
         init();
     }
 
-    public BinaryTab(AppScene scene, Path path) {
-        super(scene, path);
+    public BinaryTab(Path path) {
+        super(path);
 
         init();
     }

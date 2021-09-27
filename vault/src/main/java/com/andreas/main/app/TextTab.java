@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import com.andreas.main.save.Register;
+import com.andreas.main.save.SaveTreeItem;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -13,13 +14,13 @@ public class TextTab extends AppTab {
 
     private TextArea textArea;
 
-    public TextTab(AppScene scene, Register register) {
-        super(scene, register, true);
+    public TextTab(Register register, SaveTreeItem saveTreeItem) {
+        super(register, true, saveTreeItem);
         init();
     }
 
-    public TextTab(AppScene scene, Path path) {
-        super(scene, path);
+    public TextTab(Path path) {
+        super(path);
         init();        
     }
 

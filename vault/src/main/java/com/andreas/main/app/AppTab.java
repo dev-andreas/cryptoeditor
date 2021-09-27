@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import com.andreas.main.FileUtils;
 import com.andreas.main.save.Register;
+import com.andreas.main.save.SaveTreeItem;
 
 import javafx.scene.control.Tab;
 
@@ -13,9 +14,11 @@ public abstract class AppTab extends Tab {
     private String name, type;
     protected byte[] data;
     private boolean editable, saved;
+    private SaveTreeItem saveTreeItem;
 
-    public AppTab(AppScene appScene, Register register, boolean editable) {
+    public AppTab(Register register, boolean editable, SaveTreeItem saveTreeItem) {
         this.editable = editable;
+        this.saveTreeItem = saveTreeItem;
         saved = true;
 
         name = register.getName();
@@ -25,7 +28,7 @@ public abstract class AppTab extends Tab {
         setText(register.isOpen() ? name + type : "Locked register");
     }
 
-    public AppTab(AppScene appScene, Path filePath) {
+    public AppTab(Path filePath) {
         saved = true;
 
         String[] fullName = FileUtils.splitPrefixAndSuffix(filePath.getFileName().toString());
@@ -75,5 +78,9 @@ public abstract class AppTab extends Tab {
 
     public String getFileType() {
         return type;
+    }
+
+    public SaveTreeItem getSaveTreeItem() {
+        return saveTreeItem;
     }
 }

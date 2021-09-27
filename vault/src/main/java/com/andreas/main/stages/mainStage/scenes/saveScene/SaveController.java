@@ -55,6 +55,7 @@ public class SaveController extends AppController {
     public TreeView<String> registers;
 
     public SaveTreeItem selectedItem, selectedDirectory;
+    public AppTab selectedTab;
 
     @Override
     public void init() {
@@ -137,9 +138,13 @@ public class SaveController extends AppController {
                     fileType.setText("");
                     return;
                 }
-                registerName.setText(((AppTab)newTab).getName());
-                fileType.setText(((AppTab)newTab).getFileType());
+                registerName.setText(((AppTab) newTab).getName());
+                fileType.setText(((AppTab) newTab).getFileType());
 			}
+        });
+
+        tabs.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) -> {
+            selectedTab = (AppTab) newTab;
         });
 
         selectedItem = (SaveTreeItem) registers.getRoot();
@@ -222,13 +227,13 @@ public class SaveController extends AppController {
     }
 
     public void saveCurrentTab() {
-        AppTab selectedTab = (AppTab)tabs.getSelectionModel().getSelectedItem();
-        if (tabs.getSelectionModel().getSelectedIndex() < 0 || selectedTab.isSaved())
+        if (selectedTab == null || selectedTab.isSaved())
             return;
 
         Save save = ((SaveScene) getScene()).getSave();
 
-        String path = selectedItem.calculatePath();
+
+        String path = selectedTab.getSaveTreeItem().calculatePath();
         Register register = new Register(path);
         register.read();
         save.openRegister(register);

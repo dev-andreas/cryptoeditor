@@ -7,8 +7,7 @@ import javafx.application.Application;
  * @version 1.0.
  */
 public class Main {
-    // TODO check if encryption algorithm is secure enough
-    // TODO replace backup folder outside saves
+    // TODO save bug (saves the active file on the left bar)
 
     public static void main(String[] args) {
         Application.launch(App.class, args);
