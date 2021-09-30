@@ -32,13 +32,13 @@ public class FileStage extends AppStage {
                 if (Register.ACCEPTED_MEDIA_FILE_TYPES[i].equals(suffix.toLowerCase()))
                     return new MediaTab(appScene, filePath);
             }
-            return new BinaryTab(appScene, filePath);
+            return new BinaryTab(filePath);
         }
         for (int i = 0; i < Register.ACCEPTED_HTML_FILE_TYPES.length; i++) {
             if (Register.ACCEPTED_HTML_FILE_TYPES[i].equals(suffix.toLowerCase()))
                 return new HtmlTab(appScene, filePath);
         }
-        return new TextTab(appScene, filePath);
+        return new TextTab(filePath);
     }
 
     // CLASS

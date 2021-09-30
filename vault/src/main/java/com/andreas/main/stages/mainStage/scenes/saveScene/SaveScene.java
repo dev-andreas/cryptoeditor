@@ -23,14 +23,14 @@ import javafx.application.Application;
 
 public class SaveScene extends AppScene {
 
-    public static AppTab getCorrectTab(AppScene appScene, Register register) {
+    public static AppTab getCorrectTab(AppScene appScene, Register register, SaveTreeItem saveTreeItem) {
         if (!register.isOpen())
             return null;
         
         if (FileUtils.seemsBinary(register.getContent())) {
             for (int i = 0; i < Register.ACCEPTED_IMAGE_FILE_TYPES.length; i++) {
                 if (Register.ACCEPTED_IMAGE_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
-                    return new ImageTab(appScene, register);
+                    return new ImageTab(appScene, register, saveTreeItem);
             }
             /*
             for (int i = 0; i < Register.ACCEPTED_MEDIA_FILE_TYPES.length; i++) {
@@ -38,13 +38,13 @@ public class SaveScene extends AppScene {
                     return new MediaTab(saveScene, register);
             }
             */
-            return new BinaryTab(appScene, register);
+            return new BinaryTab(register, saveTreeItem);
         } else {
             for (int i = 0; i < Register.ACCEPTED_HTML_FILE_TYPES.length; i++) {
                 if (Register.ACCEPTED_HTML_FILE_TYPES[i].equals(register.getFileType().toLowerCase()))
-                    return new HtmlTab(appScene, register);
+                    return new HtmlTab(appScene, register, saveTreeItem);
             }
-            return new TextTab(appScene, register);
+            return new TextTab(register, saveTreeItem);
         }
     }
 

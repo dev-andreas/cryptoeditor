@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppTab;
 import com.andreas.main.save.Register;
+import com.andreas.main.save.SaveTreeItem;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -20,13 +21,13 @@ public class HtmlTab extends AppTab {
     private HTMLEditor htmlEditor;
     private TextArea textArea;
 
-    public HtmlTab(AppScene appScene, Register register) {
-        super(appScene, register, true);
+    public HtmlTab(AppScene appScene, Register register, SaveTreeItem saveTreeItem) {
+        super(register, true, saveTreeItem);
         init(appScene);
     }
 
     public HtmlTab(AppScene appScene, Path path) {
-        super(appScene, path);
+        super(path);
         init(appScene);
     }
 

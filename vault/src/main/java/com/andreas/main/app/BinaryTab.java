@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-public abstract class BinaryTab extends AppTab {
+public class BinaryTab extends AppTab {
 
     private VBox box;
     private Text text;

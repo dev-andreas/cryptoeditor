@@ -129,7 +129,7 @@ public class SaveController extends AppController {
         });
 
         // tab changed action
-        tabs.getSelectionModel().selectedItemProperty().addListener( new ChangeListener<Tab>() {
+        tabs.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Tab> observable, Tab oldTab, Tab newTab) {
@@ -234,6 +234,7 @@ public class SaveController extends AppController {
 
 
         String path = selectedTab.getSaveTreeItem().calculatePath();
+        System.out.println(selectedTab.getSaveTreeItem().getName());
         Register register = new Register(path);
         register.read();
         save.openRegister(register);
@@ -255,7 +256,7 @@ public class SaveController extends AppController {
             register.read();
             ((SaveScene) getScene()).getSave().openRegister(register);
 
-            AppTab tab = SaveScene.getCorrectTab((SaveScene)getScene(), register);
+            AppTab tab = SaveScene.getCorrectTab((SaveScene)getScene(), register, selectedItem);
             
             action.endNow(endingAction -> {
                 tabs.getTabs().add(tab);

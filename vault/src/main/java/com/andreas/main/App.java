@@ -17,7 +17,7 @@ public final class App extends Application {
     public static List<AppStage> stages = new ArrayList<>();
 
     /**
-     * This method starts the program.
+     * This method starts the app.
      */
     @Override
     public void start(Stage stage) throws Exception {

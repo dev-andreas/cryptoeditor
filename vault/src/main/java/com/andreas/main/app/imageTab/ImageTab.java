@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import com.andreas.main.app.AppScene;
 import com.andreas.main.app.AppTab;
 import com.andreas.main.save.Register;
+import com.andreas.main.save.SaveTreeItem;
 import com.andreas.main.temp.TempHandler;
 import com.andreas.main.temp.TempUtils;
 
@@ -15,8 +16,8 @@ import javafx.scene.image.Image;
 public class ImageTab extends AppTab {
 
     
-    public ImageTab(AppScene appScene, Register register) {
-        super(appScene, register, false);
+    public ImageTab(AppScene appScene, Register register, SaveTreeItem saveTreeItem) {
+        super(register, false, saveTreeItem);
 
         TempHandler tempHandler = TempUtils.createTempFile(data, true);
         Image image = null;
@@ -32,7 +33,7 @@ public class ImageTab extends AppTab {
     }
 
     public ImageTab(AppScene appScene, Path path) {
-        super(appScene, path);
+        super(path);
 
         Image image = null;
         try {
